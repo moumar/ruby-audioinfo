@@ -1,0 +1,9 @@
+History.txt
+Manifest.txt
+README.txt
+Rakefile
+lib/audioinfo.rb
+lib/audioinfo/album.rb
+lib/audioinfo/apetag.rb
+lib/audioinfo/mpcinfo.rb
+test/mpcinfo.rb
