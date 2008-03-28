@@ -1,11 +1,16 @@
 require "audioinfo"
 
 class AudioInfo::Album
+
   IMAGE_EXTENSIONS = %w{jpg jpeg gif png}
+
+  # a regexp to match the "multicd" suffix of a "multicd" string
+  # example: "toto (disc 1)" will match ' (disc 1)'
   MULTICD_REGEXP = /\s*(\(|\[)?\s*(disc|cd):?-?\s*(\d+).*(\)|\])?\s*$/i
-  #MULTICD_REGEXP = /,?\s*(\(|\[)?\s*(disc|cd|\d):?-?\s*(of )?(\d).*$/i
+
   attr_reader :files, :files_on_error, :discnum, :multicd, :basename, :infos, :path
 
+  # return the list of images in the album directory, with "folder.*" in first
   def self.images(path)
     arr = Dir.glob( File.join(path, "*.{#{IMAGE_EXTENSIONS.join(",")}}"), File::FNM_CASEFOLD).collect do |f| 
       File.expand_path(f)
@@ -18,10 +23,12 @@ class AudioInfo::Album
     arr
   end
 
+  # strip the "multicd" string from the given +name+
   def self.basename(name)
     name.sub(MULTICD_REGEXP, '')
   end
 
+  # return the number of the disc in the box or 0
   def self.discnum(name)
     if name =~ MULTICD_REGEXP
       $3.to_i
@@ -30,6 +37,8 @@ class AudioInfo::Album
     end
   end
 
+  # open the Album with +path+. +fast_lookup+ will only check 
+  # first and last file of the directory
   def initialize(path, fast_lookup = false)
     @path = path
     @multicd = false
@@ -73,10 +82,12 @@ class AudioInfo::Album
     end
   end
 
+  # is the album empty?
   def empty?
     @files.empty?
   end
 
+  # are all the files of the album MusicBrainz tagged ?
   def mb_tagged?
     return false if @files.empty?
     mb = true
@@ -91,6 +102,7 @@ class AudioInfo::Album
     self.class.images(@path)
   end
 
+  # title of the album
   def title
     albums = @files.collect { |f| f.album }.uniq
     #if albums.size > 1
@@ -100,15 +112,18 @@ class AudioInfo::Album
     #end
   end
 
+  # mbid (MusicBrainz ID) of the album
   def mbid
     return nil unless mb_tagged?
     @files.collect { |f| f.musicbrainz_infos["albumid"] }.uniq.first
   end
 
+  # is the album multi-artist?
   def va?
     @files.collect { |f| f.artist }.uniq.size > 1
   end
 
+  # pretty print
   def to_s
     out = StringIO.new
     out.puts(@path)

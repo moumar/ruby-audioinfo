@@ -51,6 +51,7 @@ class AudioInfo
     ret
   end
 
+  # open the file with path +fn+ and convert all tags from/to specified +encoding+
   def initialize(fn, encoding = 'utf-8')
     raise(AudioInfoError, "path is nil") if fn.nil?
     @path = fn
@@ -179,29 +180,35 @@ class AudioInfo
 
   end
 
+  # set the title of the file
   def title=(v)
     @needs_commit = true
     @title = v
   end
 
+  # set the artist of the file
   def artist=(v)
     @needs_commit = true
     @artist = v
   end
 
+  # set the album of the file
   def album=(v)
     @needs_commit = true
     @album = v
   end
 
+  # hash-like access to tag
   def [](key)
     @hash[key]
   end
 
+  # convert tags to hash
   def to_h
     @hash
   end
 
+  # close the file and commits changes to disk
   def close
     if @needs_commit
       case @info
@@ -244,6 +251,7 @@ class AudioInfo
     "musicbrainz_albumartistid"=>"89ad4ac3-39f7-470e-963a-56509c546377"}>
 =end
 
+  # check if the file is correctly tagged by MusicBrainz
   def mb_tagged?
     ! @musicbrainz_infos.empty?
   end
