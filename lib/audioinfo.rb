@@ -296,7 +296,9 @@ class AudioInfo
     tags = {}
     Iconv.open(@encoding, from_encoding) do |ic|
       tags_orig.inject(tags) do |hash, (k, v)| 
-        hash[ic.iconv(k)] = ic.iconv(v)
+        if v.is_a?(String)
+          hash[ic.iconv(k)] = ic.iconv(v)
+        end
         hash
       end
     end
