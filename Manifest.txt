@@ -6,4 +6,5 @@ lib/audioinfo.rb
 lib/audioinfo/album.rb
 lib/audioinfo/apetag.rb
 lib/audioinfo/mpcinfo.rb
+lib/shell_escape.rb
 test/mpcinfo.rb

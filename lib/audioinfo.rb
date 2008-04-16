@@ -3,7 +3,6 @@
 require "iconv"
 require "stringio"
 
-require "shell_escape"
 $: << File.dirname(__FILE__)+"/audioinfo"
 
 require "mp3info"
@@ -13,6 +12,7 @@ require "apetag"
 require "wmainfo"
 require "mp4info"
 require "flacinfo"
+require "shell_escape"
 
 class AudioInfoError < Exception ; end
 
@@ -30,7 +30,7 @@ class AudioInfo
 
   SUPPORTED_EXTENSIONS = %w{mp3 ogg mpc wma mp4 aac m4a flac}
 
-  VERSION = "0.1"
+  VERSION = "0.1.1"
 
   attr_reader :path, :extension, :musicbrainz_infos, :tracknum, :bitrate, :vbr
   attr_reader :artist, :album, :title, :length, :date

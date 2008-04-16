@@ -1,3 +1,8 @@
+=== 0.1.1 / 2008-04-17
+
+* updated gem dependency on MP4Info >= 0.3.2, which fixes utf-8 handling
+* added lib/shell_escape.rb that lacks from previous version
+
 === 0.1 / 2008-03-28
 
 * first release

@@ -29,11 +29,11 @@ wma, flac, aac, mp4, m4a.
 
 == REQUIREMENTS:
 
-* ruby-mp3info
-* ruby-ogginfo
-* MP4Info
-* flacinfo-rb
-* wmainfo-rb
+* ruby-mp3info[http://ruby-mp3info.rubyforge.org/]
+* ruby-ogginfo[http://ruby-ogginfo.rubyforge.org/]
+* MP4Info[http://mp4info.rubyforge.org/]
+* flacinfo-rb[http://rubyforge.org/projects/flacinfo-rb/]
+* wmainfo-rb[http://rubyforge.org/projects/wmainfo/]
 
 == INSTALL:
 
