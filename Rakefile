@@ -3,7 +3,7 @@ require 'hoe'
 require 'lib/audioinfo.rb'
 #require "pp"
 
-Hoe.new('ruby-audioinfo', AudioInfo::VERSION) do |p|
+hoe = Hoe.new('ruby-audioinfo', AudioInfo::VERSION) do |p|
   p.rubyforge_name = 'ruby-audioinfo'
   p.author = 'Guillaume Pierronnet'
   p.email = 'moumar@rubyforge.org'
@@ -17,5 +17,9 @@ Hoe.new('ruby-audioinfo', AudioInfo::VERSION) do |p|
   p.url = "http://ruby-audioinfo.rubyforge.org"
   p.changes = p.paragraphs_of('History.txt', 0..1).join("\n\n")
   p.remote_rdoc_dir = ''
-  #pp p
+end
+
+task :tag_svn do
+  svn_repo = "svn+ssh://rubyforge.org/var/svn/ruby-audioinfo"
+  sh "svn copy -m 'tagged version #{hoe.version}' #{svn_repo}/trunk #{svn_repo}/tags/REL-#{hoe.version}"
 end
