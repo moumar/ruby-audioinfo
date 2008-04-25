@@ -121,8 +121,9 @@ class AudioInfo
 	  @bitrate = @info.info["bitrate"]
 	  @length = @info.info["playtime_seconds"]
 	  MUSICBRAINZ_FIELDS.each do |key, original_key|
-	    #next if key == "trmid" # no trmid with WMA since picard cannot analyze it
-	    @musicbrainz_infos[key] = @info.info["MusicBrainz/" + original_key.tr(" ", "")]
+	    @musicbrainz_infos[key] = 
+              @info.info["MusicBrainz/" + original_key.tr(" ", "")] ||
+              @info.info["MusicBrainz/" + original_key]
 	  end
           
 	when 'aac', 'mp4', 'm4a'
