@@ -1,3 +1,7 @@
+=== 0.1.2 / 2008-04-25
+
+* fix on parsing of MusicBrainz tags of .wma files
+
 === 0.1.1 / 2008-04-17
 
 * updated gem dependency on MP4Info >= 0.3.2, which fixes utf-8 handling
