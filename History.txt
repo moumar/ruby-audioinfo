@@ -1,3 +1,8 @@
+=== 0.1.3 / 2008-07-03
+
+* #tracknum= added
+* charset correctly set when commiting Ogg tags
+
 === 0.1.2 / 2008-04-25
 
 * fix on parsing of MusicBrainz tags of .wma files
