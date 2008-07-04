@@ -1,3 +1,8 @@
+=== 0.1.4 / 2008-07-04
+
+* charset correctly set when commiting MP3 tags too
+* file is written only if tags have really changed
+
 === 0.1.3 / 2008-07-03
 
 * #tracknum= added

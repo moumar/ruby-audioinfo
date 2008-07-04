@@ -30,7 +30,7 @@ class AudioInfo
 
   SUPPORTED_EXTENSIONS = %w{mp3 ogg mpc wma mp4 aac m4a flac}
 
-  VERSION = "0.1.3"
+  VERSION = "0.1.4"
 
   attr_reader :path, :extension, :musicbrainz_infos, :tracknum, :bitrate, :vbr
   attr_reader :artist, :album, :title, :length, :date
@@ -183,26 +183,35 @@ class AudioInfo
 
   # set the title of the file
   def title=(v)
-    @needs_commit = true
-    @title = v
+    if @title != v
+      @needs_commit = true
+      @title = v
+    end
   end
 
   # set the artist of the file
   def artist=(v)
-    @needs_commit = true
-    @artist = v
+    if @artist != v
+      @needs_commit = true
+      @artist = v
+    end
   end
 
   # set the album of the file
   def album=(v)
-    @needs_commit = true
-    @album = v
+    if @album != v
+      @needs_commit = true
+      @album = v
+    end
   end
 
   # set the track number of the file
   def tracknum=(v)
-    @needs_commit = true
-    @tracknum = v.to_i
+    v = v.to_i
+    if @tracknum != v
+      @needs_commit = true
+      @tracknum = v
+    end
   end
 
   # hash-like access to tag
@@ -220,14 +229,14 @@ class AudioInfo
     if @needs_commit
       case @info
         when Mp3Info
-	  Mp3Info.open(@path) do |info|
+	  Mp3Info.open(@path, :encoding => @encoding) do |info|
 	    info.tag.artist = @artist
 	    info.tag.title = @title
 	    info.tag.album = @album
 	    info.tag.tracknum = @tracknum
 	  end
 	when OggInfo
-	  OggInfo.open(@path, "utf-8") do |ogg|
+	  OggInfo.open(@path, @encoding) do |ogg|
             { "artist" => @artist,
 	      "album"  => @album,
 	      "title"  => @title,
