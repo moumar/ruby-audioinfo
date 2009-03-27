@@ -241,7 +241,7 @@ class AudioInfo
 	      "album"  => @album,
 	      "title"  => @title,
               "tracknumber" => @tracknum}.each do |k,v|
-	      ogg.tag[k] = v
+	      ogg.tag[k] = v.to_s
 	    end
 	  end
 
