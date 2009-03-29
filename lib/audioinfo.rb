@@ -52,9 +52,9 @@ class AudioInfo
   end
 
   # open the file with path +fn+ and convert all tags from/to specified +encoding+
-  def initialize(fn, encoding = 'utf-8')
-    raise(AudioInfoError, "path is nil") if fn.nil?
-    @path = fn
+  def initialize(filename, encoding = 'utf-8')
+    raise(AudioInfoError, "path is nil") if filename.nil?
+    @path = filename
     ext = File.extname(@path)
     raise(AudioInfoError, "cannot find extension") if ext.empty?
     @extension = ext[1..-1].downcase
@@ -64,15 +64,16 @@ class AudioInfo
     begin
       case @extension
 	when 'mp3'
-	  @info = Mp3Info.new(fn, :encoding => @encoding)
+	  @info = Mp3Info.new(filename, :encoding => @encoding)
 	  default_tag_fill
-	#"TXXX"=>
-	#["MusicBrainz TRM Id\000",
-	 #"MusicBrainz Artist Id\000aba64937-3334-4c65-90a1-4e6b9d4d7ada",
-	 #"MusicBrainz Album Id\000e1a223c1-cbc2-427f-a192-5d22fefd7c4c",
-	 #"MusicBrainz Album Type\000album",
-	 #"MusicBrainz Album Status\000official",
-	 #"MusicBrainz Album Artist Id\000"]
+	  #"TXXX"=>
+	  #["MusicBrainz TRM Id\000",
+	  #"MusicBrainz Artist Id\000aba64937-3334-4c65-90a1-4e6b9d4d7ada",
+	  #"MusicBrainz Album Id\000e1a223c1-cbc2-427f-a192-5d22fefd7c4c",
+	  #"MusicBrainz Album Type\000album",
+	  #"MusicBrainz Album Status\000official",
+	  #"MusicBrainz Album Artist Id\000"]
+          
 	  if (arr = @info.tag2["TXXX"]).is_a?(Array)
 	    fields = MUSICBRAINZ_FIELDS.invert
 	    arr.each do |val|
@@ -91,7 +92,7 @@ class AudioInfo
 	  @info.close
 
 	when 'ogg'
-	  @info = OggInfo.new(fn, @encoding)
+	  @info = OggInfo.new(filename, @encoding)
 	  default_fill_musicbrainz_fields
 	  default_tag_fill
           @bitrate = @info.bitrate/1000
@@ -102,17 +103,17 @@ class AudioInfo
 	  @info.close
 	  
 	when 'mpc'
-	  fill_ape_tag(fn)
-	  
-	  mpc_info = MpcInfo.new(fn)
+          fill_ape_tag(filename)
+
+	  mpc_info = MpcInfo.new(filename)
           @bitrate = mpc_info.infos['bitrate']/1000
 	  @length = mpc_info.infos['length']
 
         when 'ape'
-	  fill_ape_tag(fn)
+	  fill_ape_tag(filename)
 
         when 'wma'
-	  @info = WmaInfo.new(fn, :encoding => @encoding)
+	  @info = WmaInfo.new(filename, :encoding => @encoding)
 	  @artist = @info.tags["Author"]
 	  @album = @info.tags["AlbumTitle"]
 	  @title = @info.tags["Title"]
@@ -127,7 +128,7 @@ class AudioInfo
 	  end
           
 	when 'aac', 'mp4', 'm4a'
-	  @info = MP4Info.open(fn)
+	  @info = MP4Info.open(filename)
 	  @artist = @info.ART
 	  @album = @info.ALB
 	  @title = @info.NAM
@@ -137,14 +138,14 @@ class AudioInfo
 	  @length = @info.SECS
 	  mapping = MUSICBRAINZ_FIELDS.invert
 
-	  `faad -i #{fn.shell_escape} 2>&1 `.grep(/^MusicBrainz (.+)$/) do
+	  `faad -i #{filename.shell_escape} 2>&1 `.grep(/^MusicBrainz (.+)$/) do
 	    name, value = $1.split(/: /, 2)
 	    key = mapping[name]
 	    @musicbrainz_infos[key] = value
 	  end
 	
 	when 'flac'
-	  @info = FlacInfo.new(fn)
+	  @info = FlacInfo.new(filename)
           tags = convert_tags_encoding(@info.tags, "UTF-8")
 	  @artist = tags["ARTIST"] || tags["artist"]
 	  @album = tags["ALBUM"] || tags["album"]
@@ -152,7 +153,7 @@ class AudioInfo
 	  @tracknum = (tags["TRACKNUMBER"]||tags["tracknumber"]).to_i
 	  @date = tags["DATE"]||tags["date"]
 	  @length = @info.streaminfo["total_samples"] / @info.streaminfo["samplerate"].to_f
-	  @bitrate = File.size(fn).to_f*8/@length/1024
+	  @bitrate = File.size(filename).to_f*8/@length/1024
           tags.each do |tagname, tagvalue|
             next unless tagname =~ /^musicbrainz_(.+)$/
             @musicbrainz_infos[$1] = tags[tagname]
@@ -299,9 +300,9 @@ class AudioInfo
     end
   end
 
-  def fill_ape_tag(fn)
+  def fill_ape_tag(filename)
     begin
-      @info = ApeTag.new(fn)
+      @info = ApeTag.new(filename)
       tags = convert_tags_encoding(@info.tag, "UTF-8")
       default_tag_fill(tags)
       default_fill_musicbrainz_fields
