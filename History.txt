@@ -1,3 +1,9 @@
+=== 0.1.5 / 2009-03-29
+
+* flac parsing more robust 
+* musicbrainz_infos support for flac
+* quick fixes in mpcinfo for id3v2 tag parsing
+
 === 0.1.4 / 2008-07-04
 
 * charset correctly set when commiting MP3 tags too
