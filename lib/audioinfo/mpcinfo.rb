@@ -150,7 +150,16 @@ class MpcInfo
     elsif mpc_header == "ID3"
       @id3v2_tag = ID3v2.new
       @id3v2_tag.from_io(@file)
-      parse_infos
+      @file.seek(@id3v2_tag.io_position)
+      # very dirty hack to allow parsing of mpc infos after id3v2 tag
+      while @file.read(1) != "M"; end
+      if @file.read(2) == "P+"
+        @file.seek(-3, IO::SEEK_CUR)
+        # we need to reparse the tag, since we have the beggining of the mpc file
+        parse_infos
+      else
+        raise(MpcInfoError, "cannot find MPC header after id3 tag")
+      end
     else
       raise(MpcInfoError, "cannot find MPC header")
     end
