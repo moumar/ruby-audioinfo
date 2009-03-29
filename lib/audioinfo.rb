@@ -30,7 +30,7 @@ class AudioInfo
 
   SUPPORTED_EXTENSIONS = %w{mp3 ogg mpc wma mp4 aac m4a flac}
 
-  VERSION = "0.1.4"
+  VERSION = "0.1.5"
 
   attr_reader :path, :extension, :musicbrainz_infos, :tracknum, :bitrate, :vbr
   attr_reader :artist, :album, :title, :length, :date
@@ -146,13 +146,18 @@ class AudioInfo
 	when 'flac'
 	  @info = FlacInfo.new(fn)
           tags = convert_tags_encoding(@info.tags, "UTF-8")
-	  @artist = tags["ARTIST"]
-	  @album = tags["ALBUM"]
-	  @title = tags["TITLE"]
-	  @tracknum = tags["TRACKNUMBER"].to_i
-	  @date = tags["DATE"]
+	  @artist = tags["ARTIST"] || tags["artist"]
+	  @album = tags["ALBUM"] || tags["album"]
+	  @title = tags["TITLE"] || tags["title"]
+	  @tracknum = (tags["TRACKNUMBER"]||tags["tracknumber"]).to_i
+	  @date = tags["DATE"]||tags["date"]
 	  @length = @info.streaminfo["total_samples"] / @info.streaminfo["samplerate"].to_f
 	  @bitrate = File.size(fn).to_f*8/@length/1024
+          tags.each do |tagname, tagvalue|
+            next unless tagname =~ /^musicbrainz_(.+)$/
+            @musicbrainz_infos[$1] = tags[tagname]
+          end
+          @musicbrainz_infos["trmid"] = tags["musicip_puid"]
 	  #default_fill_musicbrainz_fields
 
 	else
