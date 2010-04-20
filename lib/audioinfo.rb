@@ -138,7 +138,7 @@ class AudioInfo
 	  @length = @info.SECS
 	  mapping = MUSICBRAINZ_FIELDS.invert
 
-	  `faad -i #{filename.shell_escape} 2>&1 `.grep(/^MusicBrainz (.+)$/) do
+	  `faad -i #{filename.shell_escape} 2>&1 `.match(/^MusicBrainz (.+)$/) do
 	    name, value = $1.split(/: /, 2)
 	    key = mapping[name]
 	    @musicbrainz_infos[key] = value
