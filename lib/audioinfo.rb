@@ -12,7 +12,6 @@ require "apetag"
 require "wmainfo"
 require "mp4info"
 require "flacinfo"
-require "shell_escape"
 
 class AudioInfoError < Exception ; end
 
@@ -138,7 +137,7 @@ class AudioInfo
 	  @length = @info.SECS
 	  mapping = MUSICBRAINZ_FIELDS.invert
 
-	  `faad -i #{filename.shell_escape} 2>&1 `.match(/^MusicBrainz (.+)$/) do
+	  faad_info(filename).match(/^MusicBrainz (.+)$/) do
 	    name, value = $1.split(/: /, 2)
 	    key = mapping[name]
 	    @musicbrainz_infos[key] = value
@@ -327,5 +326,30 @@ class AudioInfo
       end
     end
     tags
+  end
+
+  def faad_info(file)
+    stdout, stdout_w = IO.pipe
+    stderr, stderr_w = IO.pipe
+
+    fork do
+      stdout.close
+      stderr.close
+      STDOUT.reopen(stdout_w)
+      STDERR.reopen(stderr_w)
+      exec 'faad', '-i', file
+    end
+
+    stdout_w.close
+    stderr_w.close
+    pid, status = Process.wait2
+
+    out = stdout.read.chomp
+    stdout.close
+    err = stderr.read.chomp
+    stderr.close
+
+    # Return the stderr because faad prints info on that fd...
+    status.exitstatus.zero? ? err : ''
   end
 end
