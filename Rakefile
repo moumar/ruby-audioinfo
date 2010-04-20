@@ -1,7 +1,8 @@
 require 'rubygems'
 require 'hoe'
-require 'lib/audioinfo.rb'
-#require "pp"
+
+$: << 'lib'
+require 'audioinfo'
 
 hoe = Hoe.new('ruby-audioinfo', AudioInfo::VERSION) do |p|
   p.rubyforge_name = 'ruby-audioinfo'
@@ -19,7 +20,7 @@ hoe = Hoe.new('ruby-audioinfo', AudioInfo::VERSION) do |p|
   p.remote_rdoc_dir = ''
 end
 
-task :tag_svn do
-  svn_repo = "svn+ssh://rubyforge.org/var/svn/ruby-audioinfo"
-  sh "svn copy -m 'tagged version #{hoe.version}' #{svn_repo}/trunk #{svn_repo}/tags/REL-#{hoe.version}"
-end
+#task :tag_svn do
+#  svn_repo = "svn+ssh://rubyforge.org/var/svn/ruby-audioinfo"
+#  sh "svn copy -m 'tagged version #{hoe.version}' #{svn_repo}/trunk #{svn_repo}/tags/REL-#{hoe.version}"
+#end
