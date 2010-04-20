@@ -28,6 +28,8 @@ class MpcInfo
 
   FREQUENCIES = [ 44100, 48000, 37800, 32000 ]
 
+  SV4_6_HEADER = Regexp.new('^[\x00\x01\x10\x11\x40\x41\x50\x51\x80\x81\x90\x91\xC0\xC1\xD0\xD1][\x20-37][\x00\x20\x40\x60\x80\xA0\xC0\xE0]/', nil, 'n')
+
   attr_reader :infos
   attr_reader :id3v2_tag
 
@@ -144,7 +146,7 @@ class MpcInfo
       #$ThisFileInfo['audio']['encoder'] = @infos['encoder_version'];
       #$ThisFileInfo['audio']['encoder_options'] = @infos['profile'];
 =end
-    elsif mpc_header =~ /^[\x00\x01\x10\x11\x40\x41\x50\x51\x80\x81\x90\x91\xC0\xC1\xD0\xD1][\x20-37][\x00\x20\x40\x60\x80\xA0\xC0\xE0]/s
+    elsif mpc_header =~ SV4_6_HEADER
       # this is SV4 - SV6, handle seperately
       header_size = 8
     elsif mpc_header == "ID3"
