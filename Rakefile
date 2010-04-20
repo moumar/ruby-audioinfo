@@ -1,6 +1,5 @@
 require 'rubygems'
-$: << 'lib'
-require 'audioinfo'
+require File.join(File.expand_path(File.dirname(__FILE__)), 'lib', 'audioinfo')
 
 begin
   require 'jeweler'

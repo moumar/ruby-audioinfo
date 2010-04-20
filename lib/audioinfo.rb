@@ -1,17 +1,16 @@
-#!/usr/bin/env ruby
-
 require "iconv"
 require "stringio"
 
-$: << File.dirname(__FILE__)+"/audioinfo"
-
 require "mp3info"
 require "ogginfo"
-require "mpcinfo"
-require "apetag"
 require "wmainfo"
 require "mp4info"
 require "flacinfo"
+
+$: << File.expand_path(File.dirname(__FILE__))
+
+require "audioinfo/mpcinfo"
+require "audioinfo/apetag"
 
 class AudioInfoError < Exception ; end
 
