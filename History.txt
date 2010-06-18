@@ -1,3 +1,8 @@
+=== 0.1.7 / 2010-06-18
+
+* included differents patches from Marcello Barnaba (see vtj-ruby-audioinfo fork)
+* support for ape tag writing (for .mpc and .ape files) through apetag gem
+
 === 0.1.5 / 2009-03-29
 
 * flac parsing more robust 

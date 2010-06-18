@@ -1,11 +1,15 @@
 require 'rubygems'
+require "rake/rdoctask"
+
 require File.join(File.expand_path(File.dirname(__FILE__)), 'lib', 'audioinfo')
 
 begin
   require 'jeweler'
 
+  #Jeweler::GemcutterTasks.new
+
   Jeweler::Tasks.new do |gemspec|
-    gemspec.name        = 'vjt-ruby-audioinfo'
+    gemspec.name        = 'ruby-audioinfo'
     gemspec.version     = AudioInfo::VERSION
     gemspec.authors     = ['Guillaume Pierronnet', 'Marcello Barnaba']
     gemspec.email       = 'moumar@rubyforge.org'
@@ -26,12 +30,19 @@ begin
     gemspec.add_dependency 'mp4info',      '>= 1.7.3'
     gemspec.add_dependency 'wmainfo-rb',   '>= 0.5'
     gemspec.add_dependency 'flacinfo-rb',  '>= 0.4'
+    gemspec.add_dependency 'apetag',  '= 1.1.2'
   end
+  Jeweler::GemcutterTasks.new  
+
+  Jeweler::RubyforgeTasks.new
+
 rescue LoadError
   puts 'Jeweler not available. Install it with: gem install jeweler'
 end
 
-#task :tag_svn do
-#  svn_repo = "svn+ssh://rubyforge.org/var/svn/ruby-audioinfo"
-#  sh "svn copy -m 'tagged version #{hoe.version}' #{svn_repo}/trunk #{svn_repo}/tags/REL-#{hoe.version}"
-#end
+Rake::RDocTask.new do |rd|
+  rd.main = "README.txt"
+  rd.rdoc_dir = "rdoc"
+  rd.rdoc_files.include("README.txt", "History.txt", "lib/**/*.rb")
+  rd.title = "ruby-audioinfo #{AudioInfo::VERSION}"
+end

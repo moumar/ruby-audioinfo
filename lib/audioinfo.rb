@@ -6,11 +6,11 @@ require "ogginfo"
 require "wmainfo"
 require "mp4info"
 require "flacinfo"
+require "apetag"
 
 $: << File.expand_path(File.dirname(__FILE__))
 
 require "audioinfo/mpcinfo"
-require "audioinfo/apetag"
 
 class AudioInfoError < Exception ; end
 
@@ -28,7 +28,7 @@ class AudioInfo
 
   SUPPORTED_EXTENSIONS = %w{mp3 ogg mpc wma mp4 aac m4a flac}
 
-  VERSION = "0.1.6"
+  VERSION = "0.1.7"
 
   attr_reader :path, :extension, :musicbrainz_infos, :tracknum, :bitrate, :vbr
   attr_reader :artist, :album, :title, :length, :date
@@ -249,6 +249,14 @@ class AudioInfo
 	    end
 	  end
 
+        when ApeTag
+          ape = ApeTag.new(@path)
+          ape.update do |fields|
+            fields["Artist"] = @artist
+            fields["Album"] = @album
+            fields["Title"] = @title
+            fields["Track"] = @tracknum.to_s
+          end
 	else
 	  raise(AudioInfoError, "implement me")
       end
@@ -285,31 +293,32 @@ class AudioInfo
     s.gsub("\000", "")
   end
 
-  def default_fill_musicbrainz_fields
+  def default_fill_musicbrainz_fields(tags = @info.tag)
     MUSICBRAINZ_FIELDS.keys.each do |field|
-      val = @info.tag["musicbrainz_#{field}"]
+      val = tags["musicbrainz_#{field}"]
       @musicbrainz_infos[field] = val if val
     end
   end
 
-  def default_tag_fill(tag = @info.tag)
+  def default_tag_fill(tags = @info.tag)
     %w{artist album title}.each do |v|
-      instance_variable_set( "@#{v}".to_sym, sanitize(tag[v].to_s) )
+      instance_variable_set( "@#{v}".to_sym, sanitize(tags[v].to_s) )
     end
   end
 
   def fill_ape_tag(filename)
     begin
       @info = ApeTag.new(filename)
-      tags = convert_tags_encoding(@info.tag, "UTF-8")
-      default_tag_fill(tags)
-      default_fill_musicbrainz_fields
-      @date = @info.tag["year"]
-      @tracknum = 0
-
-      if track = @info.tag['track']
-        @tracknum = @info.tag['track'].split("/").first.to_i
+      #tags = convert_tags_encoding(@info.fields, "UTF-8")
+      tags = @info.fields.inject({}) do |hash, (k, v)|
+        hash[k.downcase] = v ? v.first : nil
+        hash
       end
+      default_fill_musicbrainz_fields(tags)
+      default_tag_fill(tags)
+
+      @date = tags["year"]
+      @tracknum = tags['track'].to_i
     rescue ApeTagError
     end
   end
