@@ -3,6 +3,7 @@
 by Guillaume Pierronnet
 * http://ruby-audioinfo.rubyforge.org
 * http://rubyforge.org/projects/ruby-audioinfo/
+* https://github.com/moumar/ruby-audioinfo
 
 == DESCRIPTION:
 

@@ -20,8 +20,8 @@ begin
     gemspec.description = 'ruby-audioinfo glues together various audio libraries and presents a single API to the developer.'
                           'Currently, supported formats are: mp3, ogg, mpc, ape, wma, flac, aac, mp4, m4a.'
 
-    gemspec.files            = %w( README.txt Rakefile History.txt) + Dir['{lib,test}/**/*']
-    gemspec.extra_rdoc_files = %w( README.txt )
+    gemspec.files            = %w( README.rdoc Rakefile History.txt) + Dir['{lib,test}/**/*']
+    gemspec.extra_rdoc_files = %w( README.rdoc )
     gemspec.has_rdoc         = true
     gemspec.require_path     = 'lib'
 
@@ -41,8 +41,8 @@ rescue LoadError
 end
 
 Rake::RDocTask.new do |rd|
-  rd.main = "README.txt"
+  rd.main = "README.rdoc"
   rd.rdoc_dir = "rdoc"
-  rd.rdoc_files.include("README.txt", "History.txt", "lib/**/*.rb")
+  rd.rdoc_files.include("README.rdoc", "History.txt", "lib/**/*.rb")
   rd.title = "ruby-audioinfo #{AudioInfo::VERSION}"
 end
