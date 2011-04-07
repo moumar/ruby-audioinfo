@@ -49,6 +49,16 @@ class AudioInfo
     ret
   end
 
+  # test whether +path+ is a valid and supported audiofile
+  def self.is_audio_file?(path)
+    begin
+      AudioInfo.new(path)
+      return true
+    rescue  AudioInfoError
+      return false
+    end
+  end
+
   # open the file with path +fn+ and convert all tags from/to specified +encoding+
   def initialize(filename, encoding = 'utf-8')
     raise(AudioInfoError, "path is nil") if filename.nil?
@@ -125,7 +135,8 @@ class AudioInfo
               @info.info["MusicBrainz/" + original_key]
 	  end
           
-	when 'aac', 'mp4', 'm4a'
+	when 'mp4', 'aac', 'm4a'
+          @extension = 'mp4'
 	  @info = MP4Info.open(filename)
 	  @artist = @info.ART
 	  @album = @info.ALB
