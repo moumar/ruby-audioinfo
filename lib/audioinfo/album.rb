@@ -104,12 +104,8 @@ class AudioInfo::Album
 
   # title of the album
   def title
-    albums = @files.collect { |f| f.album }.uniq
-    #if albums.size > 1
-    #  "#{albums.first} others candidates: '" + albums[1..-1].join("', '") + "'"
-    #else
-      albums.first
-    #end
+    hash_counted = audio_album.files.collect { |f| f.album }.inject(Hash.new(0)) { |hash, album| hash[album] += 1; hash }
+    hash_counted.sort_by { |k, v| v }.last[0]
   end
 
   # mbid (MusicBrainz ID) of the album
