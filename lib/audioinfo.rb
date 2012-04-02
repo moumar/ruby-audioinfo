@@ -1,4 +1,4 @@
-require "iconv"
+# encoding: utf-8
 require "stringio"
 
 require "mp3info"
@@ -15,6 +15,13 @@ require "audioinfo/mpcinfo"
 class AudioInfoError < Exception ; end
 
 class AudioInfo
+  if RUBY_VERSION[0..2] == "1.8"
+    RUBY_1_8 = true
+    require "iconv"
+  else
+    RUBY_1_8 = false
+  end
+
   MUSICBRAINZ_FIELDS = { 
     "trmid" 	=> "TRM Id",
     "artistid" 	=> "Artist Id",
@@ -28,7 +35,7 @@ class AudioInfo
 
   SUPPORTED_EXTENSIONS = %w{mp3 ogg mpc wma mp4 aac m4a flac}
 
-  VERSION = "0.1.7"
+  VERSION = "0.2"
 
   attr_reader :path, :extension, :musicbrainz_infos, :tracknum, :bitrate, :vbr
   attr_reader :artist, :album, :title, :length, :date
@@ -59,20 +66,19 @@ class AudioInfo
     end
   end
 
-  # open the file with path +fn+ and convert all tags from/to specified +encoding+
-  def initialize(filename, encoding = 'utf-8')
+  # open the file with path +fn+
+  def initialize(filename)
     raise(AudioInfoError, "path is nil") if filename.nil?
     @path = filename
     ext = File.extname(@path)
     raise(AudioInfoError, "cannot find extension") if ext.empty?
     @extension = ext[1..-1].downcase
     @musicbrainz_infos = {}
-    @encoding = encoding
 
     begin
       case @extension
 	when 'mp3'
-	  @info = Mp3Info.new(filename, :encoding => @encoding)
+	  @info = Mp3Info.new(filename)
 	  default_tag_fill
 	  #"TXXX"=>
 	  #["MusicBrainz TRM Id\000",
@@ -100,7 +106,7 @@ class AudioInfo
 	  @info.close
 
 	when 'ogg'
-	  @info = OggInfo.new(filename, @encoding)
+	  @info = OggInfo.new(filename)
 	  default_fill_musicbrainz_fields
 	  default_tag_fill
           @bitrate = @info.bitrate/1000
@@ -121,7 +127,7 @@ class AudioInfo
 	  fill_ape_tag(filename)
 
         when 'wma'
-	  @info = WmaInfo.new(filename, :encoding => @encoding)
+	  @info = WmaInfo.new(filename, :encoding => 'utf-8')
 	  @artist = @info.tags["Author"]
 	  @album = @info.tags["AlbumTitle"]
 	  @title = @info.tags["Title"]
@@ -155,19 +161,18 @@ class AudioInfo
 	
 	when 'flac'
 	  @info = FlacInfo.new(filename)
-          tags = convert_tags_encoding(@info.tags, "UTF-8")
-	  @artist = tags["ARTIST"] || tags["artist"]
-	  @album = tags["ALBUM"] || tags["album"]
-	  @title = tags["TITLE"] || tags["title"]
-	  @tracknum = (tags["TRACKNUMBER"]||tags["tracknumber"]).to_i
-	  @date = tags["DATE"]||tags["date"]
+	  @artist = @info.tags["ARTIST"] || @info.tags["artist"]
+	  @album = @info.tags["ALBUM"] || @info.tags["album"]
+	  @title = @info.tags["TITLE"] || @info.tags["title"]
+	  @tracknum = (@info.tags["TRACKNUMBER"]||@info.tags["tracknumber"]).to_i
+	  @date = @info.tags["DATE"]||@info.tags["date"]
 	  @length = @info.streaminfo["total_samples"] / @info.streaminfo["samplerate"].to_f
 	  @bitrate = File.size(filename).to_f*8/@length/1024
-          tags.each do |tagname, tagvalue|
+          @info.tags.each do |tagname, tagvalue|
             next unless tagname =~ /^musicbrainz_(.+)$/
-            @musicbrainz_infos[$1] = tags[tagname]
+            @musicbrainz_infos[$1] = @info.tags[tagname]
           end
-          @musicbrainz_infos["trmid"] = tags["musicip_puid"]
+          @musicbrainz_infos["trmid"] = @info.tags["musicip_puid"]
 	  #default_fill_musicbrainz_fields
 
 	else
@@ -244,14 +249,14 @@ class AudioInfo
     if @needs_commit
       case @info
         when Mp3Info
-	  Mp3Info.open(@path, :encoding => @encoding) do |info|
+	  Mp3Info.open(@path) do |info|
 	    info.tag.artist = @artist
 	    info.tag.title = @title
 	    info.tag.album = @album
 	    info.tag.tracknum = @tracknum
 	  end
 	when OggInfo
-	  OggInfo.open(@path, @encoding) do |ogg|
+	  OggInfo.open(@path) do |ogg|
             { "artist" => @artist,
 	      "album"  => @album,
 	      "title"  => @title,
@@ -313,14 +318,13 @@ class AudioInfo
 
   def default_tag_fill(tags = @info.tag)
     %w{artist album title}.each do |v|
-      instance_variable_set( "@#{v}".to_sym, sanitize(tags[v].to_s) )
+      instance_variable_set( "@#{v}".to_sym, sanitize(tags[v]||"") )
     end
   end
 
   def fill_ape_tag(filename)
     begin
       @info = ApeTag.new(filename)
-      #tags = convert_tags_encoding(@info.fields, "UTF-8")
       tags = @info.fields.inject({}) do |hash, (k, v)|
         hash[k.downcase] = v ? v.first : nil
         hash
@@ -332,19 +336,6 @@ class AudioInfo
       @tracknum = tags['track'].to_i
     rescue ApeTagError
     end
-  end
-
-  def convert_tags_encoding(tags_orig, from_encoding)
-    tags = {}
-    Iconv.open(@encoding, from_encoding) do |ic|
-      tags_orig.inject(tags) do |hash, (k, v)| 
-        if v.is_a?(String)
-          hash[ic.iconv(k)] = ic.iconv(v)
-        end
-        hash
-      end
-    end
-    tags
   end
 
   def faad_info(file)

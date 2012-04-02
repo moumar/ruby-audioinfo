@@ -52,7 +52,7 @@ class MpcInfo
       header = StringIO.new(@file.read(25))
       header_size = 28
       #stream_version_byte = header.read(4).unpack("V").first 
-      stream_version_byte = header.read(1)[0] #.unpack("c").first 
+      stream_version_byte = header.read(1)[0].ord #.unpack("c").first 
 
       @infos['stream_major_version'] = (stream_version_byte & 0x0F)
       @infos['stream_minor_version'] = (stream_version_byte & 0xF0) >> 4
@@ -168,7 +168,7 @@ class MpcInfo
   end
   
   def read8(io)
-    io.read(1)[0]
+    io.read(1)[0].ord
   end
 
   def read16(io)

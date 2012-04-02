@@ -43,12 +43,15 @@ class AudioInfo::Album
     @path = path
     @multicd = false
     @basename = @path
-    exts = AudioInfo::SUPPORTED_EXTENSIONS.join(",")
+    exts = AudioInfo::SUPPORTED_EXTENSIONS.collect do |ext|
+      ext.gsub(/[a-z]/) { |c| "[#{c.downcase}#{c.upcase}]" }
+    end.join(",")
 
     # need to escape the glob path
     glob_escaped_path = @path.gsub(/([{}?*\[\]])/) { |s| '\\' << s }
 
-    file_names = Dir.glob( File.join(glob_escaped_path, "*.{#{exts}}") , File::FNM_CASEFOLD).sort
+    glob_val = File.join(glob_escaped_path, "*.{#{exts}}")
+    file_names = Dir.glob(glob_val).sort
 
     if fast_lookup
       file_names = [file_names.first, file_names.last]
@@ -104,7 +107,7 @@ class AudioInfo::Album
 
   # title of the album
   def title
-    hash_counted = audio_album.files.collect { |f| f.album }.inject(Hash.new(0)) { |hash, album| hash[album] += 1; hash }
+    hash_counted = self.files.collect { |f| f.album }.inject(Hash.new(0)) { |hash, album| hash[album] += 1; hash }
     hash_counted.sort_by { |k, v| v }.last[0]
   end
 
@@ -140,6 +143,10 @@ class AudioInfo::Album
     end
 
     out.string
+  end
+
+  def inspect
+    @infos.inspect
   end
 
 end
