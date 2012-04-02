@@ -1,3 +1,8 @@
+=== 0.2 / 2012-02-27
+
+* text encoding issues fixed
+* updated dependencies
+
 === 0.1.7 / 2010-06-18
 
 * included differents patches from Marcello Barnaba (see vtj-ruby-audioinfo fork)

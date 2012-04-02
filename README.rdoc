@@ -1,9 +1,10 @@
 = ruby-audioinfo
 
-by Guillaume Pierronnet
 * http://ruby-audioinfo.rubyforge.org
 * http://rubyforge.org/projects/ruby-audioinfo/
 * https://github.com/moumar/ruby-audioinfo
+
+by Guillaume Pierronnet
 
 == DESCRIPTION:
 
