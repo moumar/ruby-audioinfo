@@ -93,7 +93,7 @@ class AudioInfo
 	    arr.each do |val|
 	      if val =~ /^MusicBrainz (.+)\000(.*)$/
 		short_name = fields[$1]
-	        @musicbrainz_infos[short_name] = $2
+	        @musicbrainz_infos[short_name] = $2.gsub("\xEF\xBB\xBF".force_encoding("UTF-8"), '')
 	      end
 	    end
 	  end
