@@ -1,3 +1,11 @@
+=== 0.2.2 / 2012-05-18
+
+* removed "files_on_error" attribute from AudioInfo::Album . Now directly raise AudioInfoError.
+
+=== 0.2.1 / 2012-05-05
+
+* remove UTF-8 BOM from musicbrainz tags string in .mp3 files
+
 === 0.2 / 2012-02-27
 
 * text encoding issues fixed
