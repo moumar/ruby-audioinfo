@@ -8,7 +8,7 @@ class AudioInfo::Album
   # example: "toto (disc 1)" will match ' (disc 1)'
   MULTICD_REGEXP = /\s*(\(|\[)?\s*(disc|cd):?-?\s*(\d+).*(\)|\])?\s*$/i
 
-  attr_reader :files, :files_on_error, :discnum, :multicd, :basename, :infos, :path
+  attr_reader :files, :discnum, :multicd, :basename, :infos, :path
 
   # return the list of images in the album directory, with "folder.*" in first
   def self.images(path)
@@ -57,21 +57,10 @@ class AudioInfo::Album
       file_names = [file_names.first, file_names.last]
     end
 
-    @files_on_error = []
-
     @files = file_names.collect do |f|
-      begin
-        AudioInfo.new(f) 
-      rescue AudioInfoError
-        @files_on_error << f
-	nil
-      end
-    end.compact
-
-    if @files_on_error.empty?
-      @files_on_error = nil
+      AudioInfo.new(f) 
     end
-    
+
     @infos = {}
     @infos["album"] = @files.collect { |i| i.album }.uniq
     @infos["album"] = @infos["album"].first if @infos["album"].size == 1
