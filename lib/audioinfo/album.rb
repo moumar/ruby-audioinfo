@@ -96,8 +96,13 @@ class AudioInfo::Album
 
   # title of the album
   def title
+    # count the occurences of the title and take the one who has most 
     hash_counted = self.files.collect { |f| f.album }.inject(Hash.new(0)) { |hash, album| hash[album] += 1; hash }
-    hash_counted.sort_by { |k, v| v }.last[0]
+    if hash_counted.empty?
+      nil
+    else
+      hash_counted.sort_by { |k, v| v }.last[0]
+    end
   end
 
   # mbid (MusicBrainz ID) of the album
