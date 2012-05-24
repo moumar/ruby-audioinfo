@@ -12,7 +12,7 @@ $: << File.expand_path(File.dirname(__FILE__))
 
 require "audioinfo/mpcinfo"
 
-class AudioInfoError < Exception ; end
+class AudioInfoError < StandardError ; end
 
 class AudioInfo
   if RUBY_VERSION[0..2] == "1.8"
