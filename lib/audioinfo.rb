@@ -171,11 +171,11 @@ class AudioInfo
 	  # methods) lands up being more messy and brittle.
 	  @info.instance_variable_set('@tags', CaseInsenitiveHash.new(@info.tags))
 
-	  @artist = @info.tags["ARTIST"] || @info.tags["artist"]
-	  @album = @info.tags["ALBUM"] || @info.tags["album"]
-	  @title = @info.tags["TITLE"] || @info.tags["title"]
-	  @tracknum = (@info.tags["TRACKNUMBER"]||@info.tags["tracknumber"]).to_i
-	  @date = @info.tags["DATE"]||@info.tags["date"]
+	  @artist = @info.tags["artist"]
+	  @album = @info.tags["album"]
+	  @title = @info.tags["title"]
+	  @tracknum = @info.tags["tracknumber"].to_i
+	  @date = @info.tags["data"]
 	  @length = @info.streaminfo["total_samples"] / @info.streaminfo["samplerate"].to_f
 	  @bitrate = File.size(filename).to_f*8/@length/1024
           @info.tags.each do |tagname, tagvalue|
