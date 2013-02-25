@@ -11,6 +11,7 @@ require "apetag"
 $: << File.expand_path(File.dirname(__FILE__))
 
 require "audioinfo/mpcinfo"
+require "audioinfo/case_insensitive_hash"
 
 class AudioInfoError < StandardError ; end
 
@@ -164,6 +165,12 @@ class AudioInfo
 	
 	when 'flac'
 	  @info = FlacInfo.new(filename)
+	  # Unfortunately, FlacInfo doesn't allow us to fiddle inside
+	  # their class, so we have to brute force it. Any other
+	  # solution (e.g. creating another abstraction or getting
+	  # methods) lands up being more messy and brittle.
+	  @info.instance_variable_set('@tags', CaseInsenitiveHash.new(@info.tags))
+
 	  @artist = @info.tags["ARTIST"] || @info.tags["artist"]
 	  @album = @info.tags["ALBUM"] || @info.tags["album"]
 	  @title = @info.tags["TITLE"] || @info.tags["title"]
