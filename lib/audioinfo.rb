@@ -39,6 +39,9 @@ class AudioInfo
 
   attr_reader :path, :extension, :musicbrainz_infos, :tracknum, :bitrate, :vbr
   attr_reader :artist, :album, :title, :length, :date
+
+  # Part of testing API - you should not use this directly
+  attr_reader :info
   
   # "block version" of #new()
   def self.open(*args)
