@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.description = "ruby-audioinfo glue together various audio ruby libraries and presents a unified\nAPI to the developper. Currently, supported formats are: mp3, ogg, mpc, ape,\nwma, flac, aac, mp4, m4a."
   s.email = ["guillaume.pierronnet@gmail.com", "unknown"]
   s.extra_rdoc_files = ["History.txt", "Manifest.txt", "README.rdoc", "README.rdoc"]
-  s.files = ["History.txt", "Manifest.txt", "README.rdoc", "Rakefile", "lib/audioinfo.rb", "lib/audioinfo/album.rb", "lib/audioinfo/mpcinfo.rb", "test/mpcinfo.rb", ".gemtest"]
+  s.files = ["History.txt", "Manifest.txt", "README.rdoc", "Rakefile", "lib/audioinfo.rb", "lib/audioinfo/album.rb", "lib/audioinfo/mpcinfo.rb", "test/mpcinfo.rb"]
   s.homepage = "http://ruby-audioinfo.rubyforge.org"
   s.rdoc_options = ["--main", "README.rdoc"]
   s.require_paths = ["lib"]
