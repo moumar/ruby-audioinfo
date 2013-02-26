@@ -14,6 +14,6 @@ class TestAudioinfo < MiniTest::Unit::TestCase
   def test_flac_tags_wrapper
     flac_file = File.join(SUPPORT_DIR, "440Hz-5sec.flac")
     i = AudioInfo.new(flac_file)
-    assert_kind_of CaseInsenitiveHash, i.info.tags
+    assert_kind_of CaseInsensitiveHash, i.info.tags
   end
 end

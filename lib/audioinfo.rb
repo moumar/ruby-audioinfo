@@ -169,7 +169,7 @@ class AudioInfo
 	  # their class, so we have to brute force it. Any other
 	  # solution (e.g. creating another abstraction or getting
 	  # methods) lands up being more messy and brittle.
-	  @info.instance_variable_set('@tags', CaseInsenitiveHash.new(@info.tags))
+	  @info.instance_variable_set('@tags', CaseInsensitiveHash.new(@info.tags))
 
 	  @artist = @info.tags["artist"]
 	  @album = @info.tags["album"]

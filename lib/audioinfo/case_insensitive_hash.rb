@@ -1,4 +1,4 @@
-class CaseInsenitiveHash < Hash
+class CaseInsensitiveHash < Hash
   def initialize(hash = {})
     super
     hash.each do |key, value|
