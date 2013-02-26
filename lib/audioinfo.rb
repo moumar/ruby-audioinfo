@@ -11,6 +11,7 @@ require "apetag"
 $: << File.expand_path(File.dirname(__FILE__))
 
 require "audioinfo/mpcinfo"
+require "audioinfo/case_insensitive_hash"
 
 class AudioInfoError < StandardError ; end
 
@@ -39,6 +40,9 @@ class AudioInfo
 
   attr_reader :path, :extension, :musicbrainz_infos, :tracknum, :bitrate, :vbr
   attr_reader :artist, :album, :title, :length, :date
+
+  # Part of testing API - you should not use this directly
+  attr_reader :info
   
   # "block version" of #new()
   def self.open(*args)
@@ -161,11 +165,17 @@ class AudioInfo
 	
 	when 'flac'
 	  @info = FlacInfo.new(filename)
-	  @artist = @info.tags["ARTIST"] || @info.tags["artist"]
-	  @album = @info.tags["ALBUM"] || @info.tags["album"]
-	  @title = @info.tags["TITLE"] || @info.tags["title"]
-	  @tracknum = (@info.tags["TRACKNUMBER"]||@info.tags["tracknumber"]).to_i
-	  @date = @info.tags["DATE"]||@info.tags["date"]
+	  # Unfortunately, FlacInfo doesn't allow us to fiddle inside
+	  # their class, so we have to brute force it. Any other
+	  # solution (e.g. creating another abstraction or getting
+	  # methods) lands up being more messy and brittle.
+	  @info.instance_variable_set('@tags', CaseInsenitiveHash.new(@info.tags))
+
+	  @artist = @info.tags["artist"]
+	  @album = @info.tags["album"]
+	  @title = @info.tags["title"]
+	  @tracknum = @info.tags["tracknumber"].to_i
+	  @date = @info.tags["data"]
 	  @length = @info.streaminfo["total_samples"] / @info.streaminfo["samplerate"].to_f
 	  @bitrate = File.size(filename).to_f*8/@length/1024
           @info.tags.each do |tagname, tagvalue|
