@@ -17,8 +17,8 @@ Hoe.spec('ruby-audioinfo') do
   self.test_globs = ["test/test_*.rb"]
   self.rsync_args = "-rv --delete" 
 
-  extra_deps << ['ruby-mp3info', '>= 0.7.1']
-  extra_deps << ['ruby-ogginfo', '>= 0.6.9']
+  extra_deps << ['ruby-mp3info', '>= 0.8']
+  extra_deps << ['ruby-ogginfo', '>= 0.6.11']
   extra_deps << ['mp4info',      '>= 1.7.3']
   extra_deps << ['moumar-wmainfo-rb',   '>= 0.7']
   extra_deps << ['flacinfo-rb',  '>= 0.4']

@@ -1,3 +1,11 @@
+=== 0.3 / 2013-03-26
+
+* correctly computes bitrate on .flac files
+* string encoding fixes on .flac files 
+* write support on .flac with "metaflac" binary
+* case insensitive wrapper to flacinfo's tags hash
+* uses "ffmpeg" binary for writing tags on not natively supported format
+
 === 0.2.3 / 2012-05-24
 
 * fixed title method on AudioInfo::Album, now returns nil if title is not found
