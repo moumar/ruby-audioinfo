@@ -284,21 +284,28 @@ class AudioInfo
             fields["Track"] = @tracknum.to_s
           end
 	else
-          tags = ""
-          {"artist" => @artist, "album" => @album, "title" => @title, "track" => @tracknum}.each do |key, value|
-            tags << "-metadata #{key}=#{shell_escape value.to_s} "
-          end
-
-          Tempfile.open(["ruby-audioinfo", "."+@extension]) do |tf|
-            tf.close
-            cmd = "ffmpeg -y -i #{shell_escape @path.force_encoding("binary")} -loglevel quiet #{tags.force_encoding("binary")} #{tf.path.force_encoding("binary")} 2>/dev/null"
-            if system(cmd)
-              FileUtils.mv(tf.path, @path)
-            else
-              raise(AudioInfoError, "error while running ffmpeg")
+          have_metaflac = system("which metaflac > /dev/null")
+          have_ffmpeg = system("which ffmpeg > /dev/null")
+          if have_metaflac and @info.is_a?(FlacInfo)
+            tags = {"ARTIST" => @artist, 
+                    "ALBUM" => @album, 
+                    "TITLE" => @title, 
+                    "TRACKNUMBER" => @tracknum}.inject([]) do |tags, (key, value)|
+              tags + ["--set-tag", "#{key}=#{value.to_s}"]
             end
+            tag_with_shell_command("metaflac", "--remove-all", :src)
+            tag_with_shell_command("metaflac", tags, :src)
+          elsif have_ffmpeg
+            tags = {"artist" => @artist, 
+                    "album" => @album, 
+                    "title" => @title, 
+                    "track" => @tracknum}.inject("") do |tags, (key, value)|
+              tags + ["-metadata", "#{key}=#{value.to_s}"]
+            end
+            tag_with_shell_command("ffmpeg", "-i", :src, "-loglevel", "quiet", tags, :dst)
+          else
+	    raise(AudioInfoError, "implement me")
           end
-	  #raise(AudioInfoError, "implement me")
       end
       
     end
@@ -389,5 +396,30 @@ class AudioInfo
 
   def shell_escape(s)
     "'" + s.gsub(/'/) { "'\\''" } + "'"
+  end
+
+  def tag_with_shell_command(*command_arr)
+    expand_command = proc do |hash|
+      command_arr.collect do |token|
+        token.is_a?(Symbol) ? hash[token] : token
+      end.flatten
+    end
+
+    hash = {:src => @path}
+    if command_arr.include?(:dst)
+      Tempfile.open(["ruby-audioinfo", "."+@extension]) do |tf|
+        cmd = expand_command.call(hash.merge(:dst => tf.path))
+        tf.close
+        if system(*cmd)
+          FileUtils.mv(tf.path, @path)
+        else
+          raise(AudioInfoError, "error while running #{command_arr[0]}")
+        end
+      end
+    else
+      cmd = expand_command.call(hash)
+      p cmd
+      system(*cmd) || raise(AudioInfoError, "error while running #{command_arr[0]}")
+    end
   end
 end

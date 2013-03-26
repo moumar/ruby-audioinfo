@@ -1,19 +1,35 @@
 require "audioinfo"
 require "minitest/autorun"
 
+require "fileutils"
+require "tmpdir"
+
 require_relative "test_helper"
 
 class TestAudioinfo < MiniTest::Unit::TestCase
 
+  FLAC_FILE = "#{Dir.tmpdir}/ruby-audioinfo-test.flac" 
+  def setup
+    FileUtils.cp(File.join(SUPPORT_DIR, "440Hz-5sec.flac"), FLAC_FILE)
+  end
+
   def test_flac_whitelist
-    flac_file = File.join(SUPPORT_DIR, "440Hz-5sec.flac")
-    i = AudioInfo.new(flac_file)
+    i = AudioInfo.new(FLAC_FILE)
     assert_kind_of FlacInfo, i.info
   end
 
   def test_flac_tags_wrapper
-    flac_file = File.join(SUPPORT_DIR, "440Hz-5sec.flac")
-    i = AudioInfo.new(flac_file)
+    i = AudioInfo.new(FLAC_FILE)
     assert_kind_of CaseInsensitiveHash, i.info.tags
+  end
+
+  def test_flac_writing
+    title = "test with utf8éblèàqsf"
+    ai = AudioInfo.new(FLAC_FILE)
+    ai.title = title
+    ai.close
+    ai = AudioInfo.new(FLAC_FILE)
+    p ai.title, title
+    assert_equal ai.title, title
   end
 end
