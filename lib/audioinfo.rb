@@ -184,8 +184,11 @@ class AudioInfo
 	  @title = get_tag.call("title")
 	  @tracknum = @info.tags["tracknumber"].to_i
 	  @date = get_tag.call("date")
+	  @bitrate = 0
 	  @length = @info.streaminfo["total_samples"] / @info.streaminfo["samplerate"].to_f
-	  @bitrate = File.size(filename).to_f*8/@length/1024
+          if @length > 0
+	    @bitrate = File.size(filename).to_f*8/@length/1024
+          end
           @info.tags.each do |tagname, tagvalue|
             next unless tagname =~ /^musicbrainz_(.+)$/
             @musicbrainz_infos[$1] = get_tag.call(tagname)
