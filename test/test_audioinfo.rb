@@ -1,4 +1,4 @@
-require "audioinfo"
+require_relative "../lib/audioinfo"
 require "minitest/autorun"
 
 require "fileutils"
@@ -9,6 +9,7 @@ require_relative "test_helper"
 class TestAudioinfo < MiniTest::Unit::TestCase
 
   FLAC_FILE = "#{Dir.tmpdir}/ruby-audioinfo-test.flac" 
+
   def setup
     FileUtils.cp(File.join(SUPPORT_DIR, "440Hz-5sec.flac"), FLAC_FILE)
   end
@@ -29,7 +30,6 @@ class TestAudioinfo < MiniTest::Unit::TestCase
     ai.title = title
     ai.close
     ai = AudioInfo.new(FLAC_FILE)
-    p ai.title, title
-    assert_equal ai.title, title
+    assert_equal title, ai.title
   end
 end

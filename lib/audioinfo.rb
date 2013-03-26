@@ -171,20 +171,27 @@ class AudioInfo
 	  # methods) lands up being more messy and brittle.
 	  @info.instance_variable_set('@tags', CaseInsensitiveHash.new(@info.tags))
 
-	  @artist = @info.tags["artist"]
-	  @album = @info.tags["album"]
-	  @title = @info.tags["title"]
+          get_tag = proc do |name|
+            if t = @info.tags[name]
+              t.dup.force_encoding("utf-8")
+            else
+              nil
+            end
+          end
+          
+	  @artist = get_tag.call("artist")
+	  @album = get_tag.call("album")
+	  @title = get_tag.call("title")
 	  @tracknum = @info.tags["tracknumber"].to_i
-	  @date = @info.tags["data"]
+	  @date = get_tag.call("date")
 	  @length = @info.streaminfo["total_samples"] / @info.streaminfo["samplerate"].to_f
 	  @bitrate = File.size(filename).to_f*8/@length/1024
           @info.tags.each do |tagname, tagvalue|
             next unless tagname =~ /^musicbrainz_(.+)$/
-            @musicbrainz_infos[$1] = @info.tags[tagname]
+            @musicbrainz_infos[$1] = get_tag.call(tagname)
           end
           @musicbrainz_infos["trmid"] = @info.tags["musicip_puid"]
 	  #default_fill_musicbrainz_fields
-
 	else
 	  raise(AudioInfoError, "unsupported extension '.#{@extension}'")
       end
@@ -298,11 +305,10 @@ class AudioInfo
           elsif have_ffmpeg
             tags = {"artist" => @artist, 
                     "album" => @album, 
-                    "title" => @title, 
-                    "track" => @tracknum}.inject("") do |tags, (key, value)|
+                    "title" => @title}.inject([]) do |tags, (key, value)|
               tags + ["-metadata", "#{key}=#{value.to_s}"]
             end
-            tag_with_shell_command("ffmpeg", "-i", :src, "-loglevel", "quiet", tags, :dst)
+            tag_with_shell_command("ffmpeg", "-y", "-i", :src, "-loglevel", "quiet", tags, :dst)
           else
 	    raise(AudioInfoError, "implement me")
           end
@@ -418,7 +424,6 @@ class AudioInfo
       end
     else
       cmd = expand_command.call(hash)
-      p cmd
       system(*cmd) || raise(AudioInfoError, "error while running #{command_arr[0]}")
     end
   end
