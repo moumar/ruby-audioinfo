@@ -284,7 +284,21 @@ class AudioInfo
             fields["Track"] = @tracknum.to_s
           end
 	else
-	  raise(AudioInfoError, "implement me")
+          tags = ""
+          {"artist" => @artist, "album" => @album, "title" => @title, "track" => @tracknum}.each do |key, value|
+            tags << "-metadata #{key}=#{shell_escape value.to_s} "
+          end
+
+          Tempfile.open(["ruby-audioinfo", "."+@extension]) do |tf|
+            tf.close
+            cmd = "ffmpeg -y -i #{shell_escape @path.force_encoding("binary")} -loglevel quiet #{tags.force_encoding("binary")} #{tf.path.force_encoding("binary")} 2>/dev/null"
+            if system(cmd)
+              FileUtils.mv(tf.path, @path)
+            else
+              raise(AudioInfoError, "error while running ffmpeg")
+            end
+          end
+	  #raise(AudioInfoError, "implement me")
       end
       
     end
@@ -371,5 +385,9 @@ class AudioInfo
 
     # Return the stderr because faad prints info on that fd...
     status.exitstatus.zero? ? err : ''
+  end
+
+  def shell_escape(s)
+    "'" + s.gsub(/'/) { "'\\''" } + "'"
   end
 end
