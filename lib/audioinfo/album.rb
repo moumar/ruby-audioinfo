@@ -12,6 +12,7 @@ class AudioInfo::Album
 
   # return the list of images in the album directory, with "folder.*" in first
   def self.images(path)
+    path = path.dup.force_encoding("binary")
     arr = Dir.glob( File.join(path, "*.{#{IMAGE_EXTENSIONS.join(",")}}"), File::FNM_CASEFOLD).collect do |f| 
       File.expand_path(f)
     end
