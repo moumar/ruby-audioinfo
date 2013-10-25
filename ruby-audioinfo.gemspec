@@ -1,9 +1,9 @@
 # -*- encoding: utf-8 -*-
-# stub: ruby-audioinfo 0.3.2.20131025173513 ruby lib
+# stub: ruby-audioinfo 0.3.3.20131025192033 ruby lib
 
 Gem::Specification.new do |s|
   s.name = "ruby-audioinfo"
-  s.version = "0.3.2.20131025173513"
+  s.version = "0.3.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Guillaume Pierronnet", "Marcello Barnaba"]
@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<ruby-mp3info>, [">= 0.8"])
-      s.add_runtime_dependency(%q<ruby-ogginfo>, [">= 0.6.11"])
+      s.add_runtime_dependency(%q<ruby-ogginfo>, [">= 0.6.13"])
       s.add_runtime_dependency(%q<mp4info>, [">= 1.7.3"])
       s.add_runtime_dependency(%q<moumar-wmainfo-rb>, [">= 0.7"])
       s.add_runtime_dependency(%q<flacinfo-rb>, [">= 0.4"])
@@ -34,7 +34,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<hoe>, ["~> 3.5"])
     else
       s.add_dependency(%q<ruby-mp3info>, [">= 0.8"])
-      s.add_dependency(%q<ruby-ogginfo>, [">= 0.6.11"])
+      s.add_dependency(%q<ruby-ogginfo>, [">= 0.6.13"])
       s.add_dependency(%q<mp4info>, [">= 1.7.3"])
       s.add_dependency(%q<moumar-wmainfo-rb>, [">= 0.7"])
       s.add_dependency(%q<flacinfo-rb>, [">= 0.4"])
@@ -44,7 +44,7 @@ Gem::Specification.new do |s|
     end
   else
     s.add_dependency(%q<ruby-mp3info>, [">= 0.8"])
-    s.add_dependency(%q<ruby-ogginfo>, [">= 0.6.11"])
+    s.add_dependency(%q<ruby-ogginfo>, [">= 0.6.13"])
     s.add_dependency(%q<mp4info>, [">= 1.7.3"])
     s.add_dependency(%q<moumar-wmainfo-rb>, [">= 0.7"])
     s.add_dependency(%q<flacinfo-rb>, [">= 0.4"])
