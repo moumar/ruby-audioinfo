@@ -36,7 +36,7 @@ class AudioInfo
 
   SUPPORTED_EXTENSIONS = %w{mp3 ogg mpc wma mp4 aac m4a flac}
 
-  VERSION = "0.3.2"
+  VERSION = "0.3.3"
 
   attr_reader :path, :extension, :musicbrainz_infos, :tracknum, :bitrate, :vbr
   attr_reader :artist, :album, :title, :length, :date
@@ -254,6 +254,13 @@ class AudioInfo
     end
   end
 
+  def picture=(filepath)
+    if @picture != filepath
+      @needs_commit = true
+      @picture = filepath
+    end
+  end
+
   # hash-like access to tag
   def [](key)
     @hash[key]
@@ -274,6 +281,10 @@ class AudioInfo
 	    info.tag.title = @title
 	    info.tag.album = @album
 	    info.tag.tracknum = @tracknum
+            if @picture
+              info.tag2.remove_pictures
+              info.tag2.add_picture(File.binread(@picture))
+            end
 	  end
 	when OggInfo
 	  OggInfo.open(@path) do |ogg|
@@ -283,6 +294,9 @@ class AudioInfo
               "tracknumber" => @tracknum}.each do |k,v|
 	      ogg.tag[k] = v.to_s
 	    end
+            if @picture
+              ogg.picture = @picture
+            end
 	  end
 
         when ApeTag
