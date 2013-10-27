@@ -34,9 +34,9 @@ class AudioInfo
     "trackid" => "Track Id"
   }
 
-  SUPPORTED_EXTENSIONS = %w{mp3 ogg mpc wma mp4 aac m4a flac}
+  SUPPORTED_EXTENSIONS = %w{mp3 ogg opus spx mpc wma mp4 aac m4a flac}
 
-  VERSION = "0.3.3"
+  VERSION = "0.4"
 
   attr_reader :path, :extension, :musicbrainz_infos, :tracknum, :bitrate, :vbr
   attr_reader :artist, :album, :title, :length, :date
@@ -109,7 +109,7 @@ class AudioInfo
 	  @vbr = @info.vbr
 	  @info.close
 
-	when 'ogg'
+	when 'ogg', 'opus', 'spx'
 	  @info = OggInfo.new(filename)
 	  default_fill_musicbrainz_fields
 	  default_tag_fill
