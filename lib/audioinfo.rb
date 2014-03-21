@@ -7,7 +7,7 @@ require "wmainfo"
 require "mp4info"
 require "flacinfo"
 require "apetag"
-require "waveinfo"
+require "wavefile"
 
 $: << File.expand_path(File.dirname(__FILE__))
 
@@ -198,9 +198,9 @@ class AudioInfo
 	  #default_fill_musicbrainz_fields
 
 	when 'wav'
-	  @info = WaveInfo.new(filename)
-    @bitrate = @info.size.to_f * 8 / @info.duration / 1024
-	  @length = @info.duration.to_i
+	  @info = WaveFile::Reader.info(filename)
+	  @length = @info.duration.seconds
+    @bitrate = File.size(filename) * 8 / @length / 1024
 
 	else
 	  raise(AudioInfoError, "unsupported extension '.#{@extension}'")

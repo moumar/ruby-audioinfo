@@ -16,7 +16,7 @@ class TestWav < MiniTest::Unit::TestCase
 
   def test_wav_whitelist
     i = AudioInfo.new(WAV_FILE)
-    assert_kind_of WaveInfo, i.info
+    assert_kind_of WaveFile::Info, i.info
   end
 
   def test_wav_length
