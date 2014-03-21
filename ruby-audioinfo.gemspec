@@ -30,7 +30,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<moumar-wmainfo-rb>, [">= 0.7"])
       s.add_runtime_dependency(%q<flacinfo-rb>, [">= 0.4"])
       s.add_runtime_dependency(%q<apetag>, [">= 1.1.4"])
-      s.add_runtime_dependency(%q<wavefile>, [">= 0.0.2"])
+      s.add_runtime_dependency(%q<wavefile>, [">= 0.6.0"])
       s.add_development_dependency(%q<rdoc>, ["~> 3.10"])
       s.add_development_dependency(%q<hoe>, ["~> 3.5"])
     else
@@ -40,7 +40,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<moumar-wmainfo-rb>, [">= 0.7"])
       s.add_dependency(%q<flacinfo-rb>, [">= 0.4"])
       s.add_dependency(%q<apetag>, [">= 1.1.4"])
-      s.add_dependency(%q<wavefile>, [">= 0.0.2"])
+      s.add_dependency(%q<wavefile>, [">= 0.6.0"])
       s.add_dependency(%q<rdoc>, ["~> 3.10"])
       s.add_dependency(%q<hoe>, ["~> 3.5"])
     end
@@ -51,7 +51,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<moumar-wmainfo-rb>, [">= 0.7"])
     s.add_dependency(%q<flacinfo-rb>, [">= 0.4"])
     s.add_dependency(%q<apetag>, [">= 1.1.4"])
-    s.add_dependency(%q<wavefile>, [">= 0.0.2"])
+    s.add_dependency(%q<wavefile>, [">= 0.6.0"])
     s.add_dependency(%q<rdoc>, ["~> 3.10"])
     s.add_dependency(%q<hoe>, ["~> 3.5"])
   end
