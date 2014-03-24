@@ -1,3 +1,7 @@
+=== 0.5.0 / 2014-03-24
+
+* added basic support for .wav (thanks to CrimsonTautology)
+
 === 0.4 / 2013-10-27
 
 * added support for speex and opus files
