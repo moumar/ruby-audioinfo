@@ -7,6 +7,7 @@ require "wmainfo"
 require "mp4info"
 require "flacinfo"
 require "apetag"
+require "wavefile"
 
 $: << File.expand_path(File.dirname(__FILE__))
 
@@ -34,7 +35,7 @@ class AudioInfo
     "trackid" => "Track Id"
   }
 
-  SUPPORTED_EXTENSIONS = %w{mp3 ogg opus spx mpc wma mp4 aac m4a flac}
+  SUPPORTED_EXTENSIONS = %w{mp3 ogg opus spx mpc wma mp4 aac m4a flac wav}
 
   VERSION = "0.4"
 
@@ -195,6 +196,12 @@ class AudioInfo
           end
           @musicbrainz_infos["trmid"] = @info.tags["musicip_puid"]
 	  #default_fill_musicbrainz_fields
+
+	when 'wav'
+	  @info = WaveFile::Reader.info(filename)
+	  @length = @info.duration.seconds
+    @bitrate = File.size(filename) * 8 / @length / 1024
+
 	else
 	  raise(AudioInfoError, "unsupported extension '.#{@extension}'")
       end
