@@ -15,7 +15,8 @@ Hoe.spec('ruby-audioinfo') do
   #history_file = "History.txt"
   self.readme_file = "README.rdoc"
   self.test_globs = ["test/test_*.rb"]
-  self.rsync_args = "-rv --delete" 
+  self.rsync_args = "-rv --delete"
+  self.license 'GPL-3.0'
 
   extra_deps << ['ruby-mp3info', '>= 0.8']
   extra_deps << ['ruby-ogginfo', '>= 0.7']

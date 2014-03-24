@@ -89,7 +89,7 @@ class AudioInfo::Album
     end
     mb
   end
-  
+
   # return an array of images with "folder.*" in first
   def images
     self.class.images(@path)
@@ -122,17 +122,17 @@ class AudioInfo::Album
     out = StringIO.new
     out.puts(@path)
     out.print "'#{title}'"
-    
+
     unless va?
       out.print " by '#{@files.first.artist}' "
     end
 
     out.puts
-    
+
     @files.sort_by { |f| f.tracknum }.each do |f|
       out.printf("%02d %s %3d %s", f.tracknum, f.extension, f.bitrate, f.title)
       if va?
-	out.print(" "+f.artist)
+	      out.print(" "+f.artist)
       end
       out.puts
     end
@@ -143,7 +143,4 @@ class AudioInfo::Album
   def inspect
     @infos.inspect
   end
-
 end
-
-

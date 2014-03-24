@@ -3,7 +3,7 @@
 
 Gem::Specification.new do |s|
   s.name = "ruby-audioinfo"
-  s.version = "0.4"
+  s.version = "0.5.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Guillaume Pierronnet", "Marcello Barnaba"]
@@ -19,40 +19,15 @@ Gem::Specification.new do |s|
   s.rubygems_version = "2.1.5"
   s.summary = "ruby-audioinfo glue together various audio ruby libraries and presents a unified API to the developper"
   s.test_files = ["test/test_audioinfo.rb", "test/test_case_insensitive_hash.rb", "test/test_helper.rb"]
+  s.license = 'GPL-3.0'
 
-  if s.respond_to? :specification_version then
-    s.specification_version = 4
-
-    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<ruby-mp3info>, [">= 0.8"])
-      s.add_runtime_dependency(%q<ruby-ogginfo>, [">= 0.6.13"])
-      s.add_runtime_dependency(%q<mp4info>, [">= 1.7.3"])
-      s.add_runtime_dependency(%q<moumar-wmainfo-rb>, [">= 0.7"])
-      s.add_runtime_dependency(%q<flacinfo-rb>, [">= 0.4"])
-      s.add_runtime_dependency(%q<apetag>, [">= 1.1.4"])
-      s.add_runtime_dependency(%q<wavefile>, [">= 0.6.0"])
-      s.add_development_dependency(%q<rdoc>, ["~> 3.10"])
-      s.add_development_dependency(%q<hoe>, ["~> 3.5"])
-    else
-      s.add_dependency(%q<ruby-mp3info>, [">= 0.8"])
-      s.add_dependency(%q<ruby-ogginfo>, [">= 0.6.13"])
-      s.add_dependency(%q<mp4info>, [">= 1.7.3"])
-      s.add_dependency(%q<moumar-wmainfo-rb>, [">= 0.7"])
-      s.add_dependency(%q<flacinfo-rb>, [">= 0.4"])
-      s.add_dependency(%q<apetag>, [">= 1.1.4"])
-      s.add_dependency(%q<wavefile>, [">= 0.6.0"])
-      s.add_dependency(%q<rdoc>, ["~> 3.10"])
-      s.add_dependency(%q<hoe>, ["~> 3.5"])
-    end
-  else
-    s.add_dependency(%q<ruby-mp3info>, [">= 0.8"])
-    s.add_dependency(%q<ruby-ogginfo>, [">= 0.6.13"])
-    s.add_dependency(%q<mp4info>, [">= 1.7.3"])
-    s.add_dependency(%q<moumar-wmainfo-rb>, [">= 0.7"])
-    s.add_dependency(%q<flacinfo-rb>, [">= 0.4"])
-    s.add_dependency(%q<apetag>, [">= 1.1.4"])
-    s.add_dependency(%q<wavefile>, [">= 0.6.0"])
-    s.add_dependency(%q<rdoc>, ["~> 3.10"])
-    s.add_dependency(%q<hoe>, ["~> 3.5"])
-  end
+  s.add_runtime_dependency(%q<ruby-mp3info>, [">= 0.8"])
+  s.add_runtime_dependency(%q<ruby-ogginfo>, [">= 0.6.13"])
+  s.add_runtime_dependency(%q<mp4info>, [">= 1.7.3"])
+  s.add_runtime_dependency(%q<moumar-wmainfo-rb>, [">= 0.7"])
+  s.add_runtime_dependency(%q<flacinfo-rb>, [">= 0.4"])
+  s.add_runtime_dependency(%q<apetag>, [">= 1.1.4"])
+  s.add_runtime_dependency(%q<wavefile>, [">= 0.6.0"])
+  s.add_development_dependency(%q<rdoc>, ["~> 3.10"])
+  s.add_development_dependency(%q<hoe>, ["~> 3.5"])
 end

@@ -37,14 +37,14 @@ class AudioInfo
 
   SUPPORTED_EXTENSIONS = %w{mp3 ogg opus spx mpc wma mp4 aac m4a flac wav}
 
-  VERSION = "0.4"
+  VERSION = "0.5.0"
 
   attr_reader :path, :extension, :musicbrainz_infos, :tracknum, :bitrate, :vbr
   attr_reader :artist, :album, :title, :length, :date
 
   # Part of testing API - you should not use this directly
   attr_reader :info
-  
+
   # "block version" of #new()
   def self.open(*args)
     audio_info = self.new(*args)
@@ -82,128 +82,127 @@ class AudioInfo
 
     begin
       case @extension
-	when 'mp3'
-	  @info = Mp3Info.new(filename)
-	  default_tag_fill
-	  #"TXXX"=>
-	  #["MusicBrainz TRM Id\000",
-	  #"MusicBrainz Artist Id\000aba64937-3334-4c65-90a1-4e6b9d4d7ada",
-	  #"MusicBrainz Album Id\000e1a223c1-cbc2-427f-a192-5d22fefd7c4c",
-	  #"MusicBrainz Album Type\000album",
-	  #"MusicBrainz Album Status\000official",
-	  #"MusicBrainz Album Artist Id\000"]
-          
-	  if (arr = @info.tag2["TXXX"]).is_a?(Array)
-	    fields = MUSICBRAINZ_FIELDS.invert
-	    arr.each do |val|
-	      if val =~ /^MusicBrainz (.+)\000(.*)$/
-		short_name = fields[$1]
-	        @musicbrainz_infos[short_name] = $2.gsub("\xEF\xBB\xBF".force_encoding("UTF-8"), '')
+	    when 'mp3'
+        @info = Mp3Info.new(filename)
+        default_tag_fill
+        #"TXXX"=>
+        #["MusicBrainz TRM Id\000",
+        #"MusicBrainz Artist Id\000aba64937-3334-4c65-90a1-4e6b9d4d7ada",
+        #"MusicBrainz Album Id\000e1a223c1-cbc2-427f-a192-5d22fefd7c4c",
+        #"MusicBrainz Album Type\000album",
+        #"MusicBrainz Album Status\000official",
+        #"MusicBrainz Album Artist Id\000"]
+
+        if (arr = @info.tag2["TXXX"]).is_a?(Array)
+          fields = MUSICBRAINZ_FIELDS.invert
+          arr.each do |val|
+            if val =~ /^MusicBrainz (.+)\000(.*)$/
+		          short_name = fields[$1]
+    	        @musicbrainz_infos[short_name] = $2.gsub("\xEF\xBB\xBF".force_encoding("UTF-8"), '')
+	          end
+          end
+        end
+        @bitrate = @info.bitrate
+        i = @info.tag.tracknum
+        @tracknum = (i.is_a?(Array) ? i.last : i).to_i
+        @length = @info.length.to_i
+        @date = @info.tag["date"]
+        @vbr = @info.vbr
+        @info.close
+
+      when 'ogg', 'opus', 'spx'
+        @info = OggInfo.new(filename)
+        default_fill_musicbrainz_fields
+        default_tag_fill
+        @bitrate = @info.bitrate/1000
+        @tracknum = @info.tag.tracknumber.to_i
+        @length = @info.length.to_i
+        @date = @info.tag["date"]
+        @vbr = true
+        @info.close
+
+	    when 'mpc'
+        fill_ape_tag(filename)
+	      mpc_info = MpcInfo.new(filename)
+        @bitrate = mpc_info.infos['bitrate']/1000
+	      @length = mpc_info.infos['length']
+
+      when 'ape'
+	      fill_ape_tag(filename)
+
+      when 'wma'
+        @info = WmaInfo.new(filename, :encoding => 'utf-8')
+        @artist = @info.tags["Author"]
+        @album = @info.tags["AlbumTitle"]
+        @title = @info.tags["Title"]
+        @tracknum = @info.tags["TrackNumber"].to_i
+        @date = @info.tags["Year"]
+        @bitrate = @info.info["bitrate"]
+        @length = @info.info["playtime_seconds"]
+        MUSICBRAINZ_FIELDS.each do |key, original_key|
+          @musicbrainz_infos[key] =
+                  @info.info["MusicBrainz/" + original_key.tr(" ", "")] ||
+                  @info.info["MusicBrainz/" + original_key]
 	      end
-	    end
-	  end
-          @bitrate = @info.bitrate
-	  i = @info.tag.tracknum
-	  @tracknum = (i.is_a?(Array) ? i.last : i).to_i
-	  @length = @info.length.to_i
-	  @date = @info.tag["date"]
-	  @vbr = @info.vbr
-	  @info.close
 
-	when 'ogg', 'opus', 'spx'
-	  @info = OggInfo.new(filename)
-	  default_fill_musicbrainz_fields
-	  default_tag_fill
-          @bitrate = @info.bitrate/1000
-          @tracknum = @info.tag.tracknumber.to_i
-	  @length = @info.length.to_i
-	  @date = @info.tag["date"]
-	  @vbr = true
-	  @info.close
-	  
-	when 'mpc'
-          fill_ape_tag(filename)
+	    when 'mp4', 'aac', 'm4a'
+        @extension = 'mp4'
+        @info = MP4Info.open(filename)
+        @artist = @info.ART
+        @album = @info.ALB
+        @title = @info.NAM
+        @tracknum = ( t = @info.TRKN ) ? t.first : 0
+        @date = @info.DAY
+        @bitrate = @info.BITRATE
+        @length = @info.SECS
+        mapping = MUSICBRAINZ_FIELDS.invert
 
-	  mpc_info = MpcInfo.new(filename)
-          @bitrate = mpc_info.infos['bitrate']/1000
-	  @length = mpc_info.infos['length']
+        faad_info(filename).match(/^MusicBrainz (.+)$/) do
+          name, value = $1.split(/: /, 2)
+          key = mapping[name]
+          @musicbrainz_infos[key] = value
+        end
 
-        when 'ape'
-	  fill_ape_tag(filename)
+	    when 'flac'
+        @info = FlacInfo.new(filename)
+        # Unfortunately, FlacInfo doesn't allow us to fiddle inside
+        # their class, so we have to brute force it. Any other
+        # solution (e.g. creating another abstraction or getting
+        # methods) lands up being more messy and brittle.
+        @info.instance_variable_set('@tags', CaseInsensitiveHash.new(@info.tags))
 
-        when 'wma'
-	  @info = WmaInfo.new(filename, :encoding => 'utf-8')
-	  @artist = @info.tags["Author"]
-	  @album = @info.tags["AlbumTitle"]
-	  @title = @info.tags["Title"]
-	  @tracknum = @info.tags["TrackNumber"].to_i
-	  @date = @info.tags["Year"]
-	  @bitrate = @info.info["bitrate"]
-	  @length = @info.info["playtime_seconds"]
-	  MUSICBRAINZ_FIELDS.each do |key, original_key|
-	    @musicbrainz_infos[key] = 
-              @info.info["MusicBrainz/" + original_key.tr(" ", "")] ||
-              @info.info["MusicBrainz/" + original_key]
-	  end
-          
-	when 'mp4', 'aac', 'm4a'
-          @extension = 'mp4'
-	  @info = MP4Info.open(filename)
-	  @artist = @info.ART
-	  @album = @info.ALB
-	  @title = @info.NAM
-	  @tracknum = ( t = @info.TRKN ) ? t.first : 0
-	  @date = @info.DAY
-	  @bitrate = @info.BITRATE
-	  @length = @info.SECS
-	  mapping = MUSICBRAINZ_FIELDS.invert
-
-	  faad_info(filename).match(/^MusicBrainz (.+)$/) do
-	    name, value = $1.split(/: /, 2)
-	    key = mapping[name]
-	    @musicbrainz_infos[key] = value
-	  end
-	
-	when 'flac'
-	  @info = FlacInfo.new(filename)
-	  # Unfortunately, FlacInfo doesn't allow us to fiddle inside
-	  # their class, so we have to brute force it. Any other
-	  # solution (e.g. creating another abstraction or getting
-	  # methods) lands up being more messy and brittle.
-	  @info.instance_variable_set('@tags', CaseInsensitiveHash.new(@info.tags))
-
-          get_tag = proc do |name|
-            if t = @info.tags[name]
-              t.dup.force_encoding("utf-8")
-            else
-              nil
-            end
+        get_tag = proc do |name|
+          if t = @info.tags[name]
+            t.dup.force_encoding("utf-8")
+          else
+            nil
           end
-          
-	  @artist = get_tag.call("artist")
-	  @album = get_tag.call("album")
-	  @title = get_tag.call("title")
-	  @tracknum = @info.tags["tracknumber"].to_i
-	  @date = get_tag.call("date")
-	  @bitrate = 0
-	  @length = @info.streaminfo["total_samples"] / @info.streaminfo["samplerate"].to_f
-          if @length > 0
-	    @bitrate = File.size(filename).to_f*8/@length/1024
-          end
-          @info.tags.each do |tagname, tagvalue|
-            next unless tagname =~ /^musicbrainz_(.+)$/
-            @musicbrainz_infos[$1] = get_tag.call(tagname)
-          end
-          @musicbrainz_infos["trmid"] = @info.tags["musicip_puid"]
-	  #default_fill_musicbrainz_fields
+        end
 
-	when 'wav'
-	  @info = WaveFile::Reader.info(filename)
-	  @length = @info.duration.seconds
-    @bitrate = File.size(filename) * 8 / @length / 1024
+        @artist = get_tag.call("artist")
+        @album = get_tag.call("album")
+        @title = get_tag.call("title")
+        @tracknum = @info.tags["tracknumber"].to_i
+        @date = get_tag.call("date")
+        @bitrate = 0
+        @length = @info.streaminfo["total_samples"] / @info.streaminfo["samplerate"].to_f
+        if @length > 0
+	        @bitrate = File.size(filename).to_f*8/@length/1024
+        end
+        @info.tags.each do |tagname, tagvalue|
+          next unless tagname =~ /^musicbrainz_(.+)$/
+          @musicbrainz_infos[$1] = get_tag.call(tagname)
+        end
+        @musicbrainz_infos["trmid"] = @info.tags["musicip_puid"]
+	      #default_fill_musicbrainz_fields
 
-	else
-	  raise(AudioInfoError, "unsupported extension '.#{@extension}'")
+      when 'wav'
+        @info = WaveFile::Reader.info(filename)
+        @length = @info.duration.seconds
+        @bitrate = File.size(filename) * 8 / @length / 1024
+
+      else
+        raise(AudioInfoError, "unsupported extension '.#{@extension}'")
       end
 
       if @tracknum == 0
@@ -212,12 +211,12 @@ class AudioInfo
 
       @musicbrainz_infos.delete_if { |k, v| v.nil? }
       @hash = { "artist" => @artist,
-	"album"  => @album,
-	"title"  => @title,
-	"tracknum" => @tracknum,
-	"date" => @date,
-	"length" => @length,
-	"bitrate" => @bitrate,
+                "album"  => @album,
+                "title"  => @title,
+                "tracknum" => @tracknum,
+                "date" => @date,
+                "length" => @length,
+                "bitrate" => @bitrate,
       }
 
     rescue Exception, Mp3InfoError, OggInfoError, ApeTagError => e
@@ -225,7 +224,6 @@ class AudioInfo
     end
 
     @needs_commit = false
-
   end
 
   # set the title of the file
@@ -282,62 +280,61 @@ class AudioInfo
   def close
     if @needs_commit
       case @info
-        when Mp3Info
-	  Mp3Info.open(@path) do |info|
-	    info.tag.artist = @artist
-	    info.tag.title = @title
-	    info.tag.album = @album
-	    info.tag.tracknum = @tracknum
-            if @picture
-              info.tag2.remove_pictures
-              info.tag2.add_picture(File.binread(@picture))
-            end
-	  end
-	when OggInfo
-	  OggInfo.open(@path) do |ogg|
-            { "artist" => @artist,
-	      "album"  => @album,
-	      "title"  => @title,
-              "tracknumber" => @tracknum}.each do |k,v|
-	      ogg.tag[k] = v.to_s
-	    end
-            if @picture
-              ogg.picture = @picture
-            end
-	  end
+      when Mp3Info
+        Mp3Info.open(@path) do |info|
+          info.tag.artist = @artist
+          info.tag.title = @title
+          info.tag.album = @album
+          info.tag.tracknum = @tracknum
+          if @picture
+           info.tag2.remove_pictures
+           info.tag2.add_picture(File.binread(@picture))
+          end
+        end
+	    when OggInfo
+	      OggInfo.open(@path) do |ogg|
+          { "artist" => @artist,
+	          "album"  => @album,
+	          "title"  => @title,
+            "tracknumber" => @tracknum}.each do |k,v|
+	          ogg.tag[k] = v.to_s
+	        end
+          if @picture
+            ogg.picture = @picture
+          end
+        end
 
-        when ApeTag
-          ape = ApeTag.new(@path)
-          ape.update do |fields|
-            fields["Artist"] = @artist
-            fields["Album"] = @album
-            fields["Title"] = @title
-            fields["Track"] = @tracknum.to_s
+      when ApeTag
+        ape = ApeTag.new(@path)
+        ape.update do |fields|
+          fields["Artist"] = @artist
+          fields["Album"] = @album
+          fields["Title"] = @title
+          fields["Track"] = @tracknum.to_s
+        end
+	    else
+        have_metaflac = system("which metaflac > /dev/null")
+        have_ffmpeg = system("which ffmpeg > /dev/null")
+        if have_metaflac and @info.is_a?(FlacInfo)
+          tags = {"ARTIST" => @artist,
+                  "ALBUM" => @album,
+                  "TITLE" => @title,
+                  "TRACKNUMBER" => @tracknum}.inject([]) do |tags, (key, value)|
+            tags + ["--set-tag", "#{key}=#{value.to_s}"]
           end
-	else
-          have_metaflac = system("which metaflac > /dev/null")
-          have_ffmpeg = system("which ffmpeg > /dev/null")
-          if have_metaflac and @info.is_a?(FlacInfo)
-            tags = {"ARTIST" => @artist, 
-                    "ALBUM" => @album, 
-                    "TITLE" => @title, 
-                    "TRACKNUMBER" => @tracknum}.inject([]) do |tags, (key, value)|
-              tags + ["--set-tag", "#{key}=#{value.to_s}"]
-            end
-            tag_with_shell_command("metaflac", "--remove-all", :src)
-            tag_with_shell_command("metaflac", tags, :src)
-          elsif have_ffmpeg
-            tags = {"artist" => @artist, 
-                    "album" => @album, 
-                    "title" => @title}.inject([]) do |tags, (key, value)|
-              tags + ["-metadata", "#{key}=#{value.to_s}"]
-            end
-            tag_with_shell_command("ffmpeg", "-y", "-i", :src, "-loglevel", "quiet", tags, :dst)
-          else
-	    raise(AudioInfoError, "implement me")
+          tag_with_shell_command("metaflac", "--remove-all", :src)
+          tag_with_shell_command("metaflac", tags, :src)
+        elsif have_ffmpeg
+          tags = {"artist" => @artist, 
+                  "album" => @album, 
+                  "title" => @title}.inject([]) do |tags, (key, value)|
+            tags + ["-metadata", "#{key}=#{value.to_s}"]
           end
+          tag_with_shell_command("ffmpeg", "-y", "-i", :src, "-loglevel", "quiet", tags, :dst)
+        else
+          raise(AudioInfoError, "implement me")
+        end
       end
-      
     end
     @needs_commit
   end
@@ -363,7 +360,7 @@ class AudioInfo
     ! @musicbrainz_infos.empty?
   end
 
-  private 
+  private
 
   def sanitize(input)
     s = input.is_a?(Array) ? input.first : input
