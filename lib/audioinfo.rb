@@ -37,7 +37,7 @@ class AudioInfo
 
   SUPPORTED_EXTENSIONS = %w{mp3 ogg opus spx mpc wma mp4 aac m4a flac wav}
 
-  VERSION = "0.5.0"
+  VERSION = "0.5.1"
 
   attr_reader :path, :extension, :musicbrainz_infos, :tracknum, :bitrate, :vbr
   attr_reader :artist, :album, :title, :length, :date

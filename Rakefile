@@ -24,6 +24,7 @@ Hoe.spec('ruby-audioinfo') do
   extra_deps << ['moumar-wmainfo-rb',   '>= 0.7']
   extra_deps << ['flacinfo-rb',  '>= 0.4']
   extra_deps << ['apetag',       '>= 1.1.4']
+  extra_deps << ['wavefile',       '>= 0.6.0']
   #extra_dev_deps << ["rake", ">=0"]
 end
 
