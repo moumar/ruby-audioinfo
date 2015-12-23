@@ -198,7 +198,7 @@ class AudioInfo
 
       when 'wav'
         @info = WaveFile::Reader.info(filename)
-        @length = @info.duration.hours * 3600 + @info.duration.minutes * 60 + @info.duration.seconds + @info.duration.milliseconds * 0.01
+        @length = @info.duration.hours * 3600 + @info.duration.minutes * 60 + @info.duration.seconds + @info.duration.milliseconds * 0.001
         @bitrate = File.size(filename) * 8 / @length / 1024
 
       else
