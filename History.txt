@@ -1,3 +1,7 @@
+=== 0.5.2 / 2016-01-05
+
+* fixed length computation for .wav files (thanks to Iwanaga)
+
 === 0.5.1 / 2014-06-05
 
 * added wavefile gem to dependencies
