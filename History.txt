@@ -1,3 +1,7 @@
+=== 0.5.3 / 2016-03-
+
+* added format parameter
+
 === 0.5.2 / 2016-01-05
 
 * fixed length computation for .wav files (thanks to Iwanaga)
@@ -25,7 +29,7 @@
 === 0.3 / 2013-03-26
 
 * correctly computes bitrate on .flac files
-* string encoding fixes on .flac files 
+* string encoding fixes on .flac files
 * write support on .flac with "metaflac" binary
 * case insensitive wrapper to flacinfo's tags hash
 * uses "ffmpeg" binary for writing tags on not natively supported format
@@ -54,7 +58,7 @@
 
 === 0.1.5 / 2009-03-29
 
-* flac parsing more robust 
+* flac parsing more robust
 * musicbrainz_infos support for flac
 * quick fixes in mpcinfo for id3v2 tag parsing
 

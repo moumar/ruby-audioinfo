@@ -15,7 +15,6 @@ wma, flac, aac, mp4, m4a.
 == FEATURES/PROBLEMS:
 
 * beta write support for mp3 and ogg tags (other to be written)
-* unified support for tag text-encoding. AudioInfo.new("file", "utf-8") and you're done!
 * support for MusicBrainz tags
 * AudioInfo::Album class included, which gives an unified way to manage an album in a given directory.
 

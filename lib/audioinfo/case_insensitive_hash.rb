@@ -5,7 +5,7 @@ class CaseInsensitiveHash < Hash
       self[key.downcase] = value
     end
   end
-  
+
   def [](key)
     super(key.downcase)
   end

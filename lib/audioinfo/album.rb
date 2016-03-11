@@ -1,8 +1,7 @@
-require "audioinfo"
+require 'audioinfo'
 
 class AudioInfo::Album
-
-  IMAGE_EXTENSIONS = %w{jpg jpeg gif png}
+  IMAGE_EXTENSIONS = %w(jpg jpeg gif png).freeze
 
   # a regexp to match the "multicd" suffix of a "multicd" string
   # example: "toto (disc 1)" will match ' (disc 1)'
@@ -12,8 +11,8 @@ class AudioInfo::Album
 
   # return the list of images in the album directory, with "folder.*" in first
   def self.images(path)
-    path = path.dup.force_encoding("binary")
-    arr = Dir.glob( File.join(path, "*.{#{IMAGE_EXTENSIONS.join(",")}}"), File::FNM_CASEFOLD).collect do |f| 
+    path = path.dup.force_encoding('binary')
+    arr = Dir.glob(File.join(path, "*.{#{IMAGE_EXTENSIONS.join(',')}}"), File::FNM_CASEFOLD).collect do |f|
       File.expand_path(f)
     end
     # move "folder.*" image on top of the array
@@ -32,13 +31,13 @@ class AudioInfo::Album
   # return the number of the disc in the box or 0
   def self.discnum(name)
     if name =~ MULTICD_REGEXP
-      $3.to_i
+      Regexp.last_match(3).to_i
     else
       0
     end
   end
 
-  # open the Album with +path+. +fast_lookup+ will only check 
+  # open the Album with +path+. +fast_lookup+ will only check
   # first and last file of the directory
   def initialize(path, fast_lookup = false)
     @path = path
@@ -46,7 +45,7 @@ class AudioInfo::Album
     @basename = @path
     exts = AudioInfo::SUPPORTED_EXTENSIONS.collect do |ext|
       ext.gsub(/[a-z]/) { |c| "[#{c.downcase}#{c.upcase}]" }
-    end.join(",")
+    end.join(',')
 
     # need to escape the glob path
     glob_escaped_path = @path.gsub(/([{}?*\[\]])/) { |s| '\\' << s }
@@ -54,24 +53,22 @@ class AudioInfo::Album
     glob_val = File.join(glob_escaped_path, "*.{#{exts}}")
     file_names = Dir.glob(glob_val).sort
 
-    if fast_lookup
-      file_names = [file_names.first, file_names.last]
-    end
+    file_names = [file_names.first, file_names.last] if fast_lookup
 
     @files = file_names.collect do |f|
-      AudioInfo.new(f) 
+      AudioInfo.new(f)
     end
 
     @infos = {}
-    @infos["album"] = @files.collect { |i| i.album }.uniq
-    @infos["album"] = @infos["album"].first if @infos["album"].size == 1
-    artists = @files.collect { |i| i.artist }.uniq
-    @infos["artist"] = artists.size > 1 ? "various" : artists.first
-    @discnum = self.class.discnum(@infos["album"])
+    @infos['album'] = @files.collect(&:album).uniq
+    @infos['album'] = @infos['album'].first if @infos['album'].size == 1
+    artists = @files.collect(&:artist).uniq
+    @infos['artist'] = artists.size > 1 ? 'various' : artists.first
+    @discnum = self.class.discnum(@infos['album'])
 
-    if not @discnum.zero?
+    unless @discnum.zero?
       @multicd = true
-      @basename = self.class.basename(@infos["album"])
+      @basename = self.class.basename(@infos['album'])
     end
   end
 
@@ -97,24 +94,24 @@ class AudioInfo::Album
 
   # title of the album
   def title
-    # count the occurences of the title and take the one who has most 
-    hash_counted = self.files.collect { |f| f.album }.inject(Hash.new(0)) { |hash, album| hash[album] += 1; hash }
+    # count the occurences of the title and take the one who has most
+    hash_counted = files.collect(&:album).inject(Hash.new(0)) { |hash, album| hash[album] += 1; hash }
     if hash_counted.empty?
       nil
     else
-      hash_counted.sort_by { |k, v| v }.last[0]
+      hash_counted.sort_by { |_k, v| v }.last[0]
     end
   end
 
   # mbid (MusicBrainz ID) of the album
   def mbid
     return nil unless mb_tagged?
-    @files.collect { |f| f.musicbrainz_infos["albumid"] }.uniq.first
+    @files.collect { |f| f.musicbrainz_infos['albumid'] }.uniq.first
   end
 
   # is the album multi-artist?
   def va?
-    @files.collect { |f| f.artist }.uniq.size > 1
+    @files.collect(&:artist).uniq.size > 1
   end
 
   # pretty print
@@ -123,17 +120,13 @@ class AudioInfo::Album
     out.puts(@path)
     out.print "'#{title}'"
 
-    unless va?
-      out.print " by '#{@files.first.artist}' "
-    end
+    out.print " by '#{@files.first.artist}' " unless va?
 
     out.puts
 
-    @files.sort_by { |f| f.tracknum }.each do |f|
-      out.printf("%02d %s %3d %s", f.tracknum, f.extension, f.bitrate, f.title)
-      if va?
-	      out.print(" "+f.artist)
-      end
+    @files.sort_by(&:tracknum).each do |f|
+      out.printf('%02d %s %3d %s', f.tracknum, f.extension, f.bitrate, f.title)
+      out.print(' ' + f.artist) if va?
       out.puts
     end
 
