@@ -13,6 +13,7 @@ $LOAD_PATH << File.expand_path(File.dirname(__FILE__))
 
 require 'audioinfo/mpcinfo'
 require 'audioinfo/case_insensitive_hash'
+require 'audioinfo/version'
 
 class AudioInfoError < StandardError; end
 
@@ -29,8 +30,6 @@ class AudioInfo
   }.freeze
 
   SUPPORTED_EXTENSIONS = %w(mp3 ogg opus spx mpc wma mp4 aac m4a flac wav).freeze
-
-  VERSION = '0.5.3'.freeze
 
   attr_reader :path, :extension, :musicbrainz_infos, :tracknum, :bitrate, :vbr
   attr_reader :artist, :album, :title, :length, :date
