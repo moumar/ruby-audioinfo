@@ -1,6 +1,7 @@
 === 0.5.3 / 2016-03-
 
 * added format parameter
+* fix wavefile gem version to `~> 0.6.0`
 
 === 0.5.2 / 2016-01-05
 
