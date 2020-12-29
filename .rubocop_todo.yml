@@ -102,12 +102,6 @@ Style/Documentation:
     - 'lib/audioinfo/case_insensitive_hash.rb'
     - 'lib/audioinfo/mpcinfo.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/Encoding:
-  Exclude:
-    - 'lib/audioinfo.rb'
-
 # Offense count: 3
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.

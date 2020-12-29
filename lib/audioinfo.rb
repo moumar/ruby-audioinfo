@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 require 'stringio'
 
 require 'mp3info'
