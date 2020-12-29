@@ -108,12 +108,6 @@ Style/Documentation:
 Style/FormatStringToken:
   EnforcedStyle: unannotated
 
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/GlobalStdStream:
-  Exclude:
-    - 'lib/audioinfo.rb'
-
 # Offense count: 8
 # Configuration parameters: MinBodyLength.
 Style/GuardClause:

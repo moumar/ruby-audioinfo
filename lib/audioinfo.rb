@@ -381,8 +381,8 @@ class AudioInfo
     fork do
       stdout.close
       stderr.close
-      STDOUT.reopen(stdout_w)
-      STDERR.reopen(stderr_w)
+      $stdout.reopen(stdout_w)
+      $stderr.reopen(stderr_w)
       exec 'faad', '-i', file
     end
 
