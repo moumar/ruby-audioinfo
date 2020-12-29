@@ -8,14 +8,6 @@
 
 # Offense count: 4
 # Cop supports --auto-correct.
-# Configuration parameters: TreatCommentsAsGroupSeparators, ConsiderPunctuation, Include.
-# Include: **/*.gemspec
-Gemspec/OrderedDependencies:
-  Exclude:
-    - 'ruby-audioinfo.gemspec'
-
-# Offense count: 4
-# Cop supports --auto-correct.
 Layout/EmptyLineAfterGuardClause:
   Exclude:
     - 'lib/audioinfo.rb'
