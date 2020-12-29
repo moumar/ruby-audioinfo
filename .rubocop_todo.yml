@@ -108,23 +108,6 @@ Style/Documentation:
 Style/FormatStringToken:
   EnforcedStyle: unannotated
 
-# Offense count: 10
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: always, always_true, never
-Style/FrozenStringLiteralComment:
-  Exclude:
-    - 'lib/audioinfo.rb'
-    - 'lib/audioinfo/album.rb'
-    - 'lib/audioinfo/case_insensitive_hash.rb'
-    - 'lib/audioinfo/mpcinfo.rb'
-    - 'lib/audioinfo/version.rb'
-    - 'test/audio_info_test.rb'
-    - 'test/case_insensitive_hash_test.rb'
-    - 'test/mpc_info.rb'
-    - 'test/test_helper.rb'
-    - 'test/wav_test.rb'
-
 # Offense count: 2
 # Cop supports --auto-correct.
 Style/GlobalStdStream:
