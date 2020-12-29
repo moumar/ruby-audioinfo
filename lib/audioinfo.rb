@@ -20,14 +20,14 @@ class AudioInfoError < StandardError; end
 
 class AudioInfo
   MUSICBRAINZ_FIELDS = {
-    'trmid' 	=> 'TRM Id',
-    'artistid' 	=> 'Artist Id',
-    'albumid' 	=> 'Album Id',
-    'albumtype'	=> 'Album Type',
-    'albumstatus' => 'Album Status',
+    'trmid'         => 'TRM Id',
+    'artistid'      => 'Artist Id',
+    'albumid'       => 'Album Id',
+    'albumtype'	    => 'Album Type',
+    'albumstatus'   => 'Album Status',
     'albumartistid' => 'Album Artist Id',
-    'sortname' => 'Sort Name',
-    'trackid' => 'Track Id'
+    'sortname'      => 'Sort Name',
+    'trackid'       => 'Track Id'
   }.freeze
 
   SUPPORTED_EXTENSIONS = %w(mp3 ogg opus spx mpc wma mp4 aac m4a flac wav).freeze
@@ -199,8 +199,8 @@ class AudioInfo
 
       @musicbrainz_infos.delete_if { |_k, v| v.nil? }
       @hash = { 'artist' => @artist,
-                'album'  => @album,
-                'title'  => @title,
+                'album' => @album,
+                'title' => @title,
                 'tracknum' => @tracknum,
                 'date' => @date,
                 'length' => @length,
@@ -281,8 +281,8 @@ class AudioInfo
       when OggInfo
         OggInfo.open(@path) do |ogg|
           { 'artist' => @artist,
-            'album'  => @album,
-            'title'  => @title,
+            'album' => @album,
+            'title' => @title,
             'tracknumber' => @tracknum }.each do |k, v|
             ogg.tag[k] = v.to_s
           end
