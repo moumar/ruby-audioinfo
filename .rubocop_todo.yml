@@ -102,14 +102,6 @@ Style/Documentation:
     - 'lib/audioinfo/case_insensitive_hash.rb'
     - 'lib/audioinfo/mpcinfo.rb'
 
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: format, sprintf, percent
-Style/FormatString:
-  Exclude:
-    - 'lib/audioinfo/mpcinfo.rb'
-
 # Offense count: 4
 # Configuration parameters: MaxUnannotatedPlaceholdersAllowed.
 # SupportedStyles: annotated, template, unannotated
