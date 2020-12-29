@@ -97,7 +97,7 @@ module AudioInfo
     # title of the album
     def title
       # count the occurences of the title and take the one who has most
-      hash_counted = files.collect(&:album).inject(Hash.new(0)) { |hash, album| hash[album] += 1; hash }
+      hash_counted = files.collect(&:album).each_with_object(Hash.new(0)) { |album, hash| hash[album] += 1; }
       if hash_counted.empty?
         nil
       else

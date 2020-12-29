@@ -363,9 +363,8 @@ class AudioInfo
 
   def fill_ape_tag(filename)
     @info = ApeTag.new(filename)
-    tags = @info.fields.inject({}) do |hash, (k, v)|
+    tags = @info.fields.each_with_object({}) do |(k, v), hash|
       hash[k.downcase] = v ? v.first : nil
-      hash
     end
     default_fill_musicbrainz_fields(tags)
     default_tag_fill(tags)
