@@ -190,11 +190,11 @@ class MpcInfo
       'Buschmann v1.7.0-v1.7.9 or Klemm v0.90-v1.05'
     elsif encoderversion % 10 == 0
       # release version
-      sprintf('%.2f', encoderversion / 100.0)
+      format('%.2f', encoderversion / 100.0)
     elsif encoderversion.even?
-      sprintf('%.2f beta', encoderversion / 100.0)
+      format('%.2f beta', encoderversion / 100.0)
     else
-      sprintf('%.2f alpha', encoderversion / 100.0)
+      format('%.2f alpha', encoderversion / 100.0)
     end
   end
 end
