@@ -163,11 +163,11 @@ class MpcInfo
   end
 
   def read16(io)
-    io.read(2).unpack('v').first
+    io.read(2).unpack1('v')
   end
 
   def read32(io, size = 4)
-    io.read(size).unpack('V').first
+    io.read(size).unpack1('V')
   end
 
   def peak_db(i)
