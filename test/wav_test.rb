@@ -7,7 +7,6 @@ require "tmpdir"
 require_relative "test_helper"
 
 class TestWav < MiniTest::Unit::TestCase
-
   WAV_FILE = "#{Dir.tmpdir}/ruby-audioinfo-test.wav" 
 
   def setup
