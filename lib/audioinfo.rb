@@ -32,8 +32,7 @@ class AudioInfo
 
   SUPPORTED_EXTENSIONS = %w(mp3 ogg opus spx mpc wma mp4 aac m4a flac wav).freeze
 
-  attr_reader :path, :extension, :musicbrainz_infos, :tracknum, :bitrate, :vbr
-  attr_reader :artist, :album, :title, :length, :date
+  attr_reader :path, :extension, :musicbrainz_infos, :tracknum, :bitrate, :vbr, :artist, :album, :title, :length, :date
 
   # Part of testing API - you should not use this directly
   attr_reader :info
