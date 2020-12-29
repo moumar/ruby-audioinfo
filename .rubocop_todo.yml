@@ -22,10 +22,14 @@ Lint/AssignmentInCondition:
     - 'lib/audioinfo/album.rb'
 
 # Offense count: 1
-# Cop supports --auto-correct.
-Lint/ScriptPermission:
+Lint/RescueException:
   Exclude:
-    - 'lib/audioinfo/mpcinfo.rb'
+    - 'lib/audioinfo.rb'
+
+# Offense count: 1
+Lint/ShadowedException:
+  Exclude:
+    - 'lib/audioinfo.rb'
 
 # Offense count: 2
 Lint/ShadowingOuterLocalVariable:
