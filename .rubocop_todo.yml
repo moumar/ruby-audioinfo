@@ -92,12 +92,6 @@ Naming/PredicateName:
     - 'spec/**/*'
     - 'lib/audioinfo.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/Dir:
-  Exclude:
-    - 'lib/audioinfo.rb'
-
 # Offense count: 4
 Style/Documentation:
   Exclude:

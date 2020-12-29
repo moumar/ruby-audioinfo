@@ -10,7 +10,7 @@ require 'flacinfo'
 require 'apetag'
 require 'wavefile'
 
-$LOAD_PATH << File.expand_path(File.dirname(__FILE__))
+$LOAD_PATH << __dir__
 
 require 'audioinfo/mpcinfo'
 require 'audioinfo/case_insensitive_hash'
