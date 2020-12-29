@@ -15,14 +15,34 @@ GEM
   specs:
     apetag (1.1.5)
       cicphash (>= 1.0.0)
+    ast (2.4.1)
     cicphash (1.1.0)
     flacinfo-rb (1.0)
     minitest (5.14.2)
     moumar-wmainfo-rb (0.8)
     mp4info (1.7.3)
+    parallel (1.20.1)
+    parser (3.0.0.0)
+      ast (~> 2.4.1)
+    rainbow (3.0.0)
     rake (13.0.3)
+    regexp_parser (2.0.3)
+    rexml (3.2.4)
+    rubocop (1.7.0)
+      parallel (~> 1.10)
+      parser (>= 2.7.1.5)
+      rainbow (>= 2.2.2, < 4.0)
+      regexp_parser (>= 1.8, < 3.0)
+      rexml
+      rubocop-ast (>= 1.2.0, < 2.0)
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (>= 1.4.0, < 2.0)
+    rubocop-ast (1.3.0)
+      parser (>= 2.7.1.5)
     ruby-mp3info (0.8.10)
     ruby-ogginfo (0.7.2)
+    ruby-progressbar (1.10.1)
+    unicode-display_width (1.7.0)
     wavefile (0.6.0)
 
 PLATFORMS
@@ -32,6 +52,7 @@ PLATFORMS
 DEPENDENCIES
   minitest (~> 5.0)
   rake (~> 13.0)
+  rubocop (~> 1.7.0)
   ruby-audioinfo!
 
 BUNDLED WITH

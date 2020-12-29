@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Guillaume Pierronnet', 'Marcello Barnaba']
   spec.email         = ['guillaume.pierronnet@gmail.com']
   spec.summary       = 'glues together various audio ruby libraries and presents a unified API to the developer'
-  spec.description   = "glues together various audio ruby libraries and presents a unified\nAPI to the developer. Currently, supported formats are: mp3, ogg, mpc, ape,\nwma, flac, aac, mp4, m4a."
+  spec.description   = "#{spec.summary} Currently, supported formats are: mp3, ogg, mpc, ape, wma, flac, aac, mp4, m4a."
   spec.homepage      = 'https://github.com/moumar/ruby-audioinfo'
   spec.license       = 'GPL-3.0'
   spec.required_ruby_version = Gem::Requirement.new('>= 2.5.8')
