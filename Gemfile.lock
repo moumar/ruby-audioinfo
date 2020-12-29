@@ -1,0 +1,37 @@
+PATH
+  remote: .
+  specs:
+    ruby-audioinfo (0.5.4)
+      apetag (>= 1.1.4)
+      flacinfo-rb (>= 0.4)
+      moumar-wmainfo-rb (>= 0.7)
+      mp4info (>= 1.7.3)
+      ruby-mp3info (>= 0.8)
+      ruby-ogginfo (>= 0.6.13)
+      wavefile (~> 0.6.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    apetag (1.1.5)
+      cicphash (>= 1.0.0)
+    cicphash (1.1.0)
+    flacinfo-rb (1.0)
+    minitest (5.14.2)
+    moumar-wmainfo-rb (0.8)
+    mp4info (1.7.3)
+    rake (13.0.3)
+    ruby-mp3info (0.8.10)
+    ruby-ogginfo (0.7.2)
+    wavefile (0.6.0)
+
+PLATFORMS
+  x86_64-darwin-20
+
+DEPENDENCIES
+  minitest (~> 5.0)
+  rake (~> 13.0)
+  ruby-audioinfo!
+
+BUNDLED WITH
+   2.2.3

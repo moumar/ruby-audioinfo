@@ -1,9 +1,0 @@
-History.txt
-Manifest.txt
-README.rdoc
-Rakefile
-lib/audioinfo.rb
-lib/audioinfo/album.rb
-lib/audioinfo/mpcinfo.rb
-lib/audioinfo/case_insensitive_hash.rb
-test/mpcinfo.rb
