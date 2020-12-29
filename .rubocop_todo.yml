@@ -123,15 +123,7 @@ Style/OptionalBooleanParameter:
   Exclude:
     - 'lib/audioinfo/album.rb'
 
-# Offense count: 6
-# Cop supports --auto-correct.
-Style/StringConcatenation:
-  Exclude:
-    - 'lib/audioinfo.rb'
-    - 'lib/audioinfo/album.rb'
-    - 'test/mpc_info.rb'
-
-# Offense count: 78
+# Offense count: 76
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, ConsistentQuotesInMultiline.
 # SupportedStyles: single_quotes, double_quotes

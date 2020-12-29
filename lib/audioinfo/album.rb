@@ -131,7 +131,7 @@ module AudioInfo
 
       @files.sort_by(&:tracknum).each do |f|
         out.printf('%02d %s %3d %s', f.tracknum, f.extension, f.bitrate, f.title)
-        out.print(' ' + f.artist) if va?
+        out.print(" #{f.artist}") if va?
         out.puts
       end
 
