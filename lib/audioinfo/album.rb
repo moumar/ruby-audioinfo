@@ -8,7 +8,7 @@ module AudioInfo
 
     # a regexp to match the "multicd" suffix of a "multicd" string
     # example: "toto (disc 1)" will match ' (disc 1)'
-    MULTICD_REGEXP = /\s*(\(|\[)?\s*(disc|cd):?-?\s*(\d+).*(\)|\])?\s*$/i
+    MULTICD_REGEXP = /\s*(\(|\[)?\s*(disc|cd):?-?\s*(\d+).*(\)|\])?\s*$/i.freeze
 
     attr_reader :files, :discnum, :multicd, :basename, :infos, :path
 

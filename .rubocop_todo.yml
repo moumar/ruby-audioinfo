@@ -116,16 +116,6 @@ Style/GuardClause:
     - 'lib/audioinfo/album.rb'
     - 'lib/audioinfo/mpcinfo.rb'
 
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: literals, strict
-Style/MutableConstant:
-  Exclude:
-    - 'lib/audioinfo/album.rb'
-    - 'test/audio_info_test.rb'
-    - 'test/wav_test.rb'
-
 # Offense count: 8
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, IgnoredMethods.
