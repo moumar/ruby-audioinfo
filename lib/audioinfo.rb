@@ -206,7 +206,6 @@ class AudioInfo
                 'length' => @length,
                 'bitrate' => @bitrate
       }
-
     rescue StandardError, Mp3InfoError, OggInfoError, ApeTagError => e
       raise AudioInfoError, e.to_s, e.backtrace
     end
