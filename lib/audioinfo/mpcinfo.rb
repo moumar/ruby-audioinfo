@@ -110,20 +110,20 @@ class MpcInfo
 
       @infos['title_peak'] = @infos['raw']['title_peak']
       @infos['title_peak_db'] = @infos['title_peak'].zero? ? 0 : peak_db(@infos['title_peak'])
-      if @infos['raw']['title_gain'] < 0
-        @infos['title_gain_db'] = (32_768 + @infos['raw']['title_gain']) / -100.0
-      else
-        @infos['title_gain_db'] = @infos['raw']['title_gain'] / 100.0
-      end
+      @infos['title_gain_db'] = if @infos['raw']['title_gain'] < 0
+                                  (32_768 + @infos['raw']['title_gain']) / -100.0
+                                else
+                                  @infos['raw']['title_gain'] / 100.0
+                                end
 
       @infos['album_peak']        = @infos['raw']['album_peak']
       @infos['album_peak_db']     = @infos['album_peak'].zero? ? 0 : peak_db(@infos['album_peak'])
 
-      if @infos['raw']['album_gain'] < 0
-        @infos['album_gain_db'] = (32_768 + @infos['raw']['album_gain']) / -100.0
-      else
-        @infos['album_gain_db'] = @infos['raw']['album_gain'] / 100.0
-      end
+      @infos['album_gain_db'] = if @infos['raw']['album_gain'] < 0
+                                  (32_768 + @infos['raw']['album_gain']) / -100.0
+                                else
+                                  @infos['raw']['album_gain'] / 100.0
+                                end
       @infos['encoder_version'] = encoder_version(@infos['raw']['encoder_version'])
 
     #       #FIXME
