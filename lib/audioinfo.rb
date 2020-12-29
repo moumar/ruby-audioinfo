@@ -133,8 +133,8 @@ class AudioInfo
         @length = @info.info['playtime_seconds']
         MUSICBRAINZ_FIELDS.each do |key, original_key|
           @musicbrainz_infos[key] =
-            @info.info['MusicBrainz/' + original_key.tr(' ', '')] ||
-            @info.info['MusicBrainz/' + original_key]
+            @info.info["MusicBrainz/#{original_key.tr(' ', '')}"] ||
+            @info.info["MusicBrainz/#{original_key}"]
         end
 
       when 'mp4', 'aac', 'm4a'
@@ -400,7 +400,7 @@ class AudioInfo
   end
 
   def shell_escape(s)
-    "'" + s.gsub(/'/) { "'\\''" } + "'"
+    "'#{s.gsub(/'/) { "'\\''" }}'"
   end
 
   def tag_with_shell_command(*command_arr)
@@ -412,7 +412,7 @@ class AudioInfo
 
     hash = { src: @path }
     if command_arr.include?(:dst)
-      Tempfile.open(['ruby-audioinfo', '.' + @extension]) do |tf|
+      Tempfile.open(['ruby-audioinfo', ".#{@extension}"]) do |tf|
         cmd = expand_command.call(hash.merge(dst: tf.path))
         tf.close
         if system(*cmd)
