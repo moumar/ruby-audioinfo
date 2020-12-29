@@ -123,14 +123,6 @@ Style/OptionalBooleanParameter:
   Exclude:
     - 'lib/audioinfo/album.rb'
 
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: PreferredDelimiters.
-Style/PercentLiteralDelimiters:
-  Exclude:
-    - 'lib/audioinfo.rb'
-    - 'lib/audioinfo/album.rb'
-
 # Offense count: 2
 # Cop supports --auto-correct.
 # Configuration parameters: AllowMultipleReturnValues.
