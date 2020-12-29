@@ -56,9 +56,9 @@ class AudioInfo
   # test whether +path+ is a valid and supported audiofile
   def self.is_audio_file?(path)
     AudioInfo.new(path)
-    return true
+    true
   rescue AudioInfoError
-    return false
+    false
   end
 
   # open the file with path +fn+
