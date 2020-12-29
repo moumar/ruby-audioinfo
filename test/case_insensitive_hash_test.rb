@@ -2,7 +2,6 @@ require "audioinfo"
 require "minitest/autorun"
 
 class TestCaseInsensitiveHash < MiniTest::Unit::TestCase
-
   def test_string_access
     h = CaseInsensitiveHash.new
     h["foo"] = "bar"

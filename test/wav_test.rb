@@ -23,5 +23,4 @@ class TestWav < MiniTest::Unit::TestCase
     i = AudioInfo.new(WAV_FILE)
     assert_equal i.length, 6.306
   end
-
 end
