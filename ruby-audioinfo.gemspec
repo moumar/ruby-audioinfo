@@ -1,38 +1,35 @@
-# -*- encoding: utf-8 -*-
-# stub: ruby-audioinfo 0.3.3.20131025192033 ruby lib
+# frozen_string_literal: true
 
-lib = File.expand_path('../lib', __FILE__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'audioinfo/version'
+require_relative "lib/audioinfo/version"
 
-Gem::Specification.new do |s|
-  s.name = "ruby-audioinfo"
-  s.version = AudioInfo::VERSION
+Gem::Specification.new do |spec|
+  spec.name          = "ruby-audioinfo"
+  spec.version       = AudioInfo::VERSION
+  spec.authors       = ["Guillaume Pierronnet", "Marcello Barnaba"]
+  spec.email         = ["guillaume.pierronnet@gmail.com"]
+  spec.summary       = "glues together various audio ruby libraries and presents a unified API to the developer"
+  spec.description   = "glues together various audio ruby libraries and presents a unified\nAPI to the developer. Currently, supported formats are: mp3, ogg, mpc, ape,\nwma, flac, aac, mp4, m4a."
+  spec.homepage      = "https://github.com/moumar/ruby-audioinfo"
+  spec.license       = "GPL-3.0"
+  spec.required_ruby_version = Gem::Requirement.new(">= 2.5.8")
+  spec.metadata["homepage_uri"] = spec.homepage
+  spec.metadata["source_code_uri"] = spec.homepage
+  spec.metadata["changelog_uri"] = "https://github.com/moumar/ruby-audioinfo/History.txt"
 
-  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Guillaume Pierronnet", "Marcello Barnaba"]
-  s.date = "2013-10-25"
-  s.description = "ruby-audioinfo glue together various audio ruby libraries and presents a unified\nAPI to the developper. Currently, supported formats are: mp3, ogg, mpc, ape,\nwma, flac, aac, mp4, m4a."
-  s.email = ["guillaume.pierronnet@gmail.com", "unknown"]
-  s.homepage = "http://ruby-audioinfo.rubyforge.org"
-  s.rdoc_options = ["--main", "README.rdoc"]
-  s.extra_rdoc_files = ["History.txt", "Manifest.txt", "README.rdoc", "README.rdoc"]
-  s.rubyforge_project = "ruby-audioinfo"
-  s.rubygems_version = "2.1.5"
-  s.summary = "ruby-audioinfo glue together various audio ruby libraries and presents a unified API to the developper"
-  s.license = 'GPL-3.0'
+  # Specify which files should be added to the gem when it is released.
+  # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
+  spec.files = Dir.chdir(File.expand_path(__dir__)) do
+    `git ls-files -z`.split("\x0").reject { |f| f.match(%r{\A(?:test|spec|features)/}) }
+  end
+  spec.bindir        = "exe"
+  spec.executables   = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
+  spec.require_paths = ["lib"]
 
-  s.files = `git ls-files -z`.split("\x0")
-  s.test_files = s.files.grep(%r{^(test|spec|features)/})
-  s.require_paths = ["lib"]
-
-  s.add_runtime_dependency(%q<ruby-mp3info>, [">= 0.8"])
-  s.add_runtime_dependency(%q<ruby-ogginfo>, [">= 0.6.13"])
-  s.add_runtime_dependency(%q<mp4info>, [">= 1.7.3"])
-  s.add_runtime_dependency(%q<moumar-wmainfo-rb>, [">= 0.7"])
-  s.add_runtime_dependency(%q<flacinfo-rb>, [">= 0.4"])
-  s.add_runtime_dependency(%q<apetag>, [">= 1.1.4"])
-  s.add_runtime_dependency(%q<wavefile>, ["~> 0.6.0"])
-  s.add_development_dependency(%q<rdoc>, ["~> 3.10"])
-  s.add_development_dependency(%q<hoe>, ["~> 3.5"])
+  spec.add_dependency "ruby-mp3info", ">= 0.8"
+  spec.add_dependency "ruby-ogginfo", ">= 0.6.13"
+  spec.add_dependency "mp4info", ">= 1.7.3"
+  spec.add_dependency "moumar-wmainfo-rb", ">= 0.7"
+  spec.add_dependency "flacinfo-rb", ">= 0.4"
+  spec.add_dependency "apetag", ">= 1.1.4"
+  spec.add_dependency "wavefile", "~> 0.6.0"
 end
