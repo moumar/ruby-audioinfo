@@ -4,7 +4,7 @@ require 'audioinfo'
 
 module AudioInfo
   class Album
-    IMAGE_EXTENSIONS = %w(jpg jpeg gif png).freeze
+    IMAGE_EXTENSIONS = %w[jpg jpeg gif png].freeze
 
     # a regexp to match the "multicd" suffix of a "multicd" string
     # example: "toto (disc 1)" will match ' (disc 1)'

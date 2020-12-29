@@ -30,7 +30,7 @@ class AudioInfo
     'trackid'       => 'Track Id'
   }.freeze
 
-  SUPPORTED_EXTENSIONS = %w(mp3 ogg opus spx mpc wma mp4 aac m4a flac wav).freeze
+  SUPPORTED_EXTENSIONS = %w[mp3 ogg opus spx mpc wma mp4 aac m4a flac wav].freeze
 
   attr_reader :path, :extension, :musicbrainz_infos, :tracknum, :bitrate, :vbr, :artist, :album, :title, :length, :date
 
@@ -356,7 +356,7 @@ class AudioInfo
   end
 
   def default_tag_fill(tags = @info.tag)
-    %w(artist album title).each do |v|
+    %w[artist album title].each do |v|
       instance_variable_set("@#{v}".to_sym, sanitize(tags[v] || ''))
     end
   end
