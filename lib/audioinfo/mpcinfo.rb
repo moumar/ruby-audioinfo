@@ -58,9 +58,7 @@ class MpcInfo
       @infos['stream_minor_version'] = (stream_version_byte & 0xF0) >> 4
 
       @infos['frame_count']          = read32(header)
-      if @infos['stream_major_version'] != 7
-        raise(MpcInfoError, 'Only Musepack SV7 supported')
-      end
+      raise(MpcInfoError, 'Only Musepack SV7 supported') if @infos['stream_major_version'] != 7
 
       flags_dword1 = read32(header)
 
@@ -89,19 +87,15 @@ class MpcInfo
       @infos['profile']     = PROFILES_NAMES[@infos['raw']['profile']] || 'invalid'
       @infos['sample_rate'] = FREQUENCIES[@infos['raw']['sample_rate']]
 
-      if @infos['sample_rate'] == 0
-        raise(MpcInfoError, 'Corrupt MPC file: frequency == zero')
-      end
+      raise(MpcInfoError, 'Corrupt MPC file: frequency == zero') if @infos['sample_rate'] == 0
 
       sample_rate = @infos['sample_rate']
       channels = 2 # appears to be hardcoded
       @infos['samples'] = (((@infos['frame_count'] - 1) * 1152) + @infos['last_frame_length']) * channels
       @infos['length'] = (((@infos['frame_count'] - 1) * 1152) + @infos['last_frame_length']) * channels
 
-      @infos['length']     = (@infos['samples'] / channels) / @infos['sample_rate'].to_f
-      if @infos['length'] == 0
-        raise(MpcInfoError, 'Corrupt MPC file: playtime_seconds == zero')
-      end
+      @infos['length'] = (@infos['samples'] / channels) / @infos['sample_rate'].to_f
+      raise(MpcInfoError, 'Corrupt MPC file: playtime_seconds == zero') if @infos['length'] == 0
 
       # add size of file header to avdataoffset - calc bitrate correctly + MD5 data
       avdataoffset = header_size

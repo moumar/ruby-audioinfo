@@ -118,12 +118,6 @@ Style/GuardClause:
 
 # Offense count: 3
 # Cop supports --auto-correct.
-Style/IfUnlessModifier:
-  Exclude:
-    - 'lib/audioinfo/mpcinfo.rb'
-
-# Offense count: 3
-# Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
 # SupportedStyles: literals, strict
 Style/MutableConstant:
