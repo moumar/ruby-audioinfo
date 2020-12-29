@@ -44,7 +44,8 @@ class MpcInfo
   def parse_infos
     mpc_header = @file.read(3)
 
-    if mpc_header == 'MP+'
+    case mpc_header
+    when 'MP+'
       # this is SV7+
 
       header = StringIO.new(@file.read(25))
@@ -141,10 +142,10 @@ class MpcInfo
     #       #ThisFileInfo['audio']['encoder'] = 'SV'.@infos['stream_major_version'].'.'.@infos['stream_minor_version'].', '.@infos['encoder_version'];
     #       #$ThisFileInfo['audio']['encoder'] = @infos['encoder_version'];
     #       #$ThisFileInfo['audio']['encoder_options'] = @infos['profile'];
-    elsif mpc_header =~ SV4_6_HEADER
+    when SV4_6_HEADER
       # this is SV4 - SV6, handle seperately
       header_size = 8
-    elsif mpc_header == 'ID3'
+    when 'ID3'
       @id3v2_tag = ID3v2.new
       @id3v2_tag.from_io(@file)
       @file.seek(@id3v2_tag.io_position)

@@ -94,12 +94,6 @@ Naming/PredicateName:
 
 # Offense count: 1
 # Cop supports --auto-correct.
-Style/CaseLikeIf:
-  Exclude:
-    - 'lib/audioinfo/mpcinfo.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
 # SupportedStyles: nested, compact
 Style/ClassAndModuleChildren:
