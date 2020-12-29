@@ -103,7 +103,7 @@ module AudioInfo
       if hash_counted.empty?
         nil
       else
-        hash_counted.sort_by { |_k, v| v }.last[0]
+        hash_counted.max_by { |_k, v| v }[0]
       end
     end
 
