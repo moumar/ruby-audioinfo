@@ -339,7 +339,7 @@ class AudioInfo
 
   # check if the file is correctly tagged by MusicBrainz
   def mb_tagged?
-    ! @musicbrainz_infos.empty?
+    !@musicbrainz_infos.empty?
   end
 
   private
