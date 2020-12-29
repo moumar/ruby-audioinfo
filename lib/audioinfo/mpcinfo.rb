@@ -28,7 +28,11 @@ class MpcInfo
 
   FREQUENCIES = [44_100, 48_000, 37_800, 32_000].freeze
 
-  SV4_6_HEADER = Regexp.new('^[\x00\x01\x10\x11\x40\x41\x50\x51\x80\x81\x90\x91\xC0\xC1\xD0\xD1][\x20-37][\x00\x20\x40\x60\x80\xA0\xC0\xE0]/', nil, 'n')
+  SV4_6_HEADER = Regexp.new(
+    '^[\x00\x01\x10\x11\x40\x41\x50\x51\x80\x81\x90\x91\xC0\xC1\xD0\xD1][\x20-37][\x00\x20\x40\x60\x80\xA0\xC0\xE0]/',
+    nil,
+    'n'
+  )
 
   attr_reader :infos, :id3v2_tag
 
@@ -127,14 +131,16 @@ class MpcInfo
     #       if @infos['title_peak'] > 0
     #         #$ThisFileInfo['replay_gain']['track']['peak'] = @infos['title_peak']
     #       elsif round(@infos['max_level'] * 1.18) > 0)
-    #         # ThisFileInfo['replay_gain']['track']['peak'] = getid3_lib::CastAsInt(round(@infos['max_level'] * 1.18)); // why? I don't know - see mppdec.c
+    #         // why? I don't know - see mppdec.c
+    #         # ThisFileInfo['replay_gain']['track']['peak'] = getid3_lib::CastAsInt(round(@infos['max_level'] * 1.18));
     #       end
     #
     #       if @infos['album_peak'] > 0
     # 	      #$ThisFileInfo['replay_gain']['album']['peak'] = @infos['album_peak'];
     #       end
     #
-    #       #ThisFileInfo['audio']['encoder'] = 'SV'.@infos['stream_major_version'].'.'.@infos['stream_minor_version'].', '.@infos['encoder_version'];
+    #       #ThisFileInfo['audio']['encoder'] =
+    #       #  'SV'.@infos['stream_major_version'].'.'.@infos['stream_minor_version'].', '.@infos['encoder_version'];
     #       #$ThisFileInfo['audio']['encoder'] = @infos['encoder_version'];
     #       #$ThisFileInfo['audio']['encoder_options'] = @infos['profile'];
     when SV4_6_HEADER
