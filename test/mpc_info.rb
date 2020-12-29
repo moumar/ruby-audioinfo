@@ -1,4 +1,4 @@
-require File.dirname(__FILE__)+"/../lib/audioinfo/mpcinfo"
+require File.dirname(__FILE__) + "/../lib/audioinfo/mpcinfo"
 
 require "pp"
 

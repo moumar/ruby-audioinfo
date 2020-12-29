@@ -21,7 +21,7 @@ class TestCaseInsensitiveHash < MiniTest::Unit::TestCase
   end
 
   def test_copy_constructor
-    h = CaseInsensitiveHash.new({"FOO" => "bar"})
+    h = CaseInsensitiveHash.new({ "FOO" => "bar" })
     assert_equal "bar", h["foo"]
   end
 end
