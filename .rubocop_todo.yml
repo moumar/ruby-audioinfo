@@ -92,15 +92,6 @@ Naming/PredicateName:
     - 'spec/**/*'
     - 'lib/audioinfo.rb'
 
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: separated, grouped
-Style/AccessorGrouping:
-  Exclude:
-    - 'lib/audioinfo.rb'
-    - 'lib/audioinfo/mpcinfo.rb'
-
 # Offense count: 1
 # Cop supports --auto-correct.
 Style/CaseLikeIf:
