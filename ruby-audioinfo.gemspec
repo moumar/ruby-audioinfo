@@ -25,11 +25,11 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
+  spec.add_dependency "apetag", ">= 1.1.4"
+  spec.add_dependency "flacinfo-rb", ">= 0.4"
+  spec.add_dependency "moumar-wmainfo-rb", ">= 0.7"
+  spec.add_dependency "mp4info", ">= 1.7.3"
   spec.add_dependency "ruby-mp3info", ">= 0.8"
   spec.add_dependency "ruby-ogginfo", ">= 0.6.13"
-  spec.add_dependency "mp4info", ">= 1.7.3"
-  spec.add_dependency "moumar-wmainfo-rb", ">= 0.7"
-  spec.add_dependency "flacinfo-rb", ">= 0.4"
-  spec.add_dependency "apetag", ">= 1.1.4"
   spec.add_dependency "wavefile", "~> 0.6.0"
 end
