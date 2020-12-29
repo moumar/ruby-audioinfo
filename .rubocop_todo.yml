@@ -123,22 +123,6 @@ Style/OptionalBooleanParameter:
   Exclude:
     - 'lib/audioinfo/album.rb'
 
-# Offense count: 76
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, ConsistentQuotesInMultiline.
-# SupportedStyles: single_quotes, double_quotes
-Style/StringLiterals:
-  Exclude:
-    - 'Gemfile'
-    - 'Rakefile'
-    - 'bin/console'
-    - 'ruby-audioinfo.gemspec'
-    - 'test/audio_info_test.rb'
-    - 'test/case_insensitive_hash_test.rb'
-    - 'test/mpc_info.rb'
-    - 'test/test_helper.rb'
-    - 'test/wav_test.rb'
-
 # Offense count: 2
 # Cop supports --auto-correct.
 Style/UnpackFirst:

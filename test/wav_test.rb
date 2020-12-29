@@ -1,18 +1,18 @@
 # frozen_string_literal: true
 
-require_relative "../lib/audioinfo"
-require "minitest/autorun"
+require_relative '../lib/audioinfo'
+require 'minitest/autorun'
 
-require "fileutils"
-require "tmpdir"
+require 'fileutils'
+require 'tmpdir'
 
-require_relative "test_helper"
+require_relative 'test_helper'
 
 class TestWav < MiniTest::Unit::TestCase
   WAV_FILE = "#{Dir.tmpdir}/ruby-audioinfo-test.wav" 
 
   def setup
-    FileUtils.cp(File.join(SUPPORT_DIR, "piano2.wav"), WAV_FILE)
+    FileUtils.cp(File.join(SUPPORT_DIR, 'piano2.wav'), WAV_FILE)
   end
 
   def test_wav_whitelist
