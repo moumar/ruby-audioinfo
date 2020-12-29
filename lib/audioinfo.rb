@@ -204,8 +204,7 @@ class AudioInfo
                 'tracknum' => @tracknum,
                 'date' => @date,
                 'length' => @length,
-                'bitrate' => @bitrate
-      }
+                'bitrate' => @bitrate }
     rescue StandardError, Mp3InfoError, OggInfoError, ApeTagError => e
       raise AudioInfoError, e.to_s, e.backtrace
     end
