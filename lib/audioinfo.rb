@@ -349,7 +349,7 @@ class AudioInfo
   end
 
   def default_fill_musicbrainz_fields(tags = @info.tag)
-    MUSICBRAINZ_FIELDS.keys.each do |field|
+    MUSICBRAINZ_FIELDS.each_key do |field|
       val = tags["musicbrainz_#{field}"]
       @musicbrainz_infos[field] = val if val
     end

@@ -116,12 +116,6 @@ Style/GuardClause:
     - 'lib/audioinfo/album.rb'
     - 'lib/audioinfo/mpcinfo.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/HashEachMethods:
-  Exclude:
-    - 'lib/audioinfo.rb'
-
 # Offense count: 3
 # Cop supports --auto-correct.
 Style/IfUnlessModifier:
