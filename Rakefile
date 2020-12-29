@@ -5,7 +5,7 @@ require 'hoe'
 Hoe.plugin :yard
 Hoe.plugin :gemspec
 
-Hoe.spec('ruby-audioinfo') do 
+Hoe.spec('ruby-audioinfo') do
   developer "Guillaume Pierronnet", "guillaume.pierronnet@gmail.com"
   developer 'Marcello Barnaba', "unknown"
   remote_rdoc_dir = ''
@@ -13,7 +13,7 @@ Hoe.spec('ruby-audioinfo') do
 
   self.extra_rdoc_files = FileList["*.rdoc"]
   #history_file = "History.txt"
-  self.readme_file = "README.rdoc"
+  self.readme_file = "README.md"
   self.test_globs = ["test/test_*.rb"]
   self.rsync_args = "-rv --delete"
   self.license 'GPL-3.0'
