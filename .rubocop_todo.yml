@@ -51,7 +51,7 @@ Lint/UselessAssignment:
 # Offense count: 7
 # Configuration parameters: IgnoredMethods, CountRepeatedAttributes.
 Metrics/AbcSize:
-  Max: 175
+  Max: 177
 
 # Offense count: 2
 # Configuration parameters: CountComments, CountAsOne.
@@ -61,7 +61,7 @@ Metrics/ClassLength:
 # Offense count: 4
 # Configuration parameters: IgnoredMethods.
 Metrics/CyclomaticComplexity:
-  Max: 27
+  Max: 28
 
 # Offense count: 8
 # Configuration parameters: CountComments, CountAsOne, ExcludedMethods, IgnoredMethods.
@@ -71,7 +71,7 @@ Metrics/MethodLength:
 # Offense count: 4
 # Configuration parameters: IgnoredMethods.
 Metrics/PerceivedComplexity:
-  Max: 22
+  Max: 23
 
 # Offense count: 6
 # Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
@@ -114,16 +114,6 @@ Style/GuardClause:
   Exclude:
     - 'lib/audioinfo.rb'
     - 'lib/audioinfo/album.rb'
-    - 'lib/audioinfo/mpcinfo.rb'
-
-# Offense count: 8
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, IgnoredMethods.
-# SupportedStyles: predicate, comparison
-Style/NumericPredicate:
-  Exclude:
-    - 'spec/**/*'
-    - 'lib/audioinfo.rb'
     - 'lib/audioinfo/mpcinfo.rb'
 
 # Offense count: 1

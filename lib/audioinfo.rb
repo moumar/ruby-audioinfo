@@ -176,7 +176,7 @@ class AudioInfo
         @date = get_tag.call('date')
         @bitrate = 0
         @length = @info.streaminfo['total_samples'] / @info.streaminfo['samplerate'].to_f
-        @bitrate = File.size(filename).to_f * 8 / @length / 1024 if @length > 0
+        @bitrate = File.size(filename).to_f * 8 / @length / 1024 if @length.positive?
         @info.tags.each do |tagname, _tagvalue|
           next unless tagname =~ /^musicbrainz_(.+)$/
 
@@ -194,7 +194,7 @@ class AudioInfo
         raise(AudioInfoError, "unsupported extension '.#{@extension}'")
       end
 
-      @tracknum = nil if @tracknum == 0
+      @tracknum = nil if @tracknum&.zero?
 
       @musicbrainz_infos.delete_if { |_k, v| v.nil? }
       @hash = { 'artist' => @artist,
