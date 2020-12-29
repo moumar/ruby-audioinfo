@@ -87,7 +87,7 @@ class MpcInfo
       @infos['profile']     = PROFILES_NAMES[@infos['raw']['profile']] || 'invalid'
       @infos['sample_rate'] = FREQUENCIES[@infos['raw']['sample_rate']]
 
-      raise(MpcInfoError, 'Corrupt MPC file: frequency == zero') if @infos['sample_rate'] == 0
+      raise(MpcInfoError, 'Corrupt MPC file: frequency == zero') if (@infos['sample_rate']).zero?
 
       sample_rate = @infos['sample_rate']
       channels = 2 # appears to be hardcoded
@@ -95,7 +95,7 @@ class MpcInfo
       @infos['length'] = (((@infos['frame_count'] - 1) * 1152) + @infos['last_frame_length']) * channels
 
       @infos['length'] = (@infos['samples'] / channels) / @infos['sample_rate'].to_f
-      raise(MpcInfoError, 'Corrupt MPC file: playtime_seconds == zero') if @infos['length'] == 0
+      raise(MpcInfoError, 'Corrupt MPC file: playtime_seconds == zero') if (@infos['length']).zero?
 
       # add size of file header to avdataoffset - calc bitrate correctly + MD5 data
       avdataoffset = header_size
@@ -105,7 +105,7 @@ class MpcInfo
 
       @infos['title_peak'] = @infos['raw']['title_peak']
       @infos['title_peak_db'] = @infos['title_peak'].zero? ? 0 : peak_db(@infos['title_peak'])
-      @infos['title_gain_db'] = if @infos['raw']['title_gain'] < 0
+      @infos['title_gain_db'] = if (@infos['raw']['title_gain']).negative?
                                   (32_768 + @infos['raw']['title_gain']) / -100.0
                                 else
                                   @infos['raw']['title_gain'] / 100.0
@@ -114,7 +114,7 @@ class MpcInfo
       @infos['album_peak']        = @infos['raw']['album_peak']
       @infos['album_peak_db']     = @infos['album_peak'].zero? ? 0 : peak_db(@infos['album_peak'])
 
-      @infos['album_gain_db'] = if @infos['raw']['album_gain'] < 0
+      @infos['album_gain_db'] = if (@infos['raw']['album_gain']).negative?
                                   (32_768 + @infos['raw']['album_gain']) / -100.0
                                 else
                                   @infos['raw']['album_gain'] / 100.0
@@ -180,10 +180,10 @@ class MpcInfo
     # EncoderVersion %  2 == 0        Beta (1.06)
     # EncoderVersion %  2 == 1        Alpha (1.05a...z)
 
-    if encoderversion == 0
+    if encoderversion.zero?
       # very old version, not known exactly which
       'Buschmann v1.7.0-v1.7.9 or Klemm v0.90-v1.05'
-    elsif encoderversion % 10 == 0
+    elsif (encoderversion % 10).zero?
       # release version
       format('%.2f', encoderversion / 100.0)
     elsif encoderversion.even?
