@@ -80,6 +80,7 @@ class AudioInfo::Album
   # are all the files of the album MusicBrainz tagged ?
   def mb_tagged?
     return false if @files.empty?
+
     mb = true
     @files.each do |f|
       mb &&= f.mb_tagged?
@@ -106,6 +107,7 @@ class AudioInfo::Album
   # mbid (MusicBrainz ID) of the album
   def mbid
     return nil unless mb_tagged?
+
     @files.collect { |f| f.musicbrainz_infos['albumid'] }.uniq.first
   end
 

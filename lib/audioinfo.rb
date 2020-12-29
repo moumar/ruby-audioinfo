@@ -64,6 +64,7 @@ class AudioInfo
   # open the file with path +fn+
   def initialize(filename, extension = nil)
     raise(AudioInfoError, 'path is nil') if filename.nil?
+
     @path = filename
     ext = File.extname(@path)
     @extension = extension || (ext && ext[1..-1].downcase)
@@ -178,6 +179,7 @@ class AudioInfo
         @bitrate = File.size(filename).to_f * 8 / @length / 1024 if @length > 0
         @info.tags.each do |tagname, _tagvalue|
           next unless tagname =~ /^musicbrainz_(.+)$/
+
           @musicbrainz_infos[Regexp.last_match(1)] = get_tag.call(tagname)
         end
         @musicbrainz_infos['trmid'] = @info.tags['musicip_puid']
