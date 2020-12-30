@@ -9,7 +9,7 @@ require 'tmpdir'
 require_relative 'test_helper'
 
 class TestWav < MiniTest::Unit::TestCase
-  WAV_FILE = "#{Dir.tmpdir}/ruby-audioinfo-test.wav" 
+  WAV_FILE = "#{Dir.tmpdir}/ruby-audioinfo-test.wav"
 
   def setup
     FileUtils.cp(File.join(SUPPORT_DIR, 'piano2.wav'), WAV_FILE)
