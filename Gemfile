@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 
 gemspec
 
+gem 'codecov', require: false
 gem 'minitest', '~> 5.0'
 gem 'minitest-rg', '~> 5.2'
 gem 'rake', '~> 13.0'
