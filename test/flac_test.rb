@@ -13,23 +13,21 @@ class FlacTest < MiniTest::Test
 
   def setup
     FileUtils.cp(File.join(SUPPORT_DIR, '440Hz-5sec.flac'), FLAC_FILE)
+    @i = AudioInfo.new(FLAC_FILE)
   end
 
   def test_flac_whitelist
-    i = AudioInfo.new(FLAC_FILE)
-    assert_kind_of FlacInfo, i.info
+    assert_kind_of FlacInfo, @i.info
   end
 
   def test_flac_tags_wrapper
-    i = AudioInfo.new(FLAC_FILE)
-    assert_kind_of CaseInsensitiveHash, i.info.tags
+    assert_kind_of CaseInsensitiveHash, @i.info.tags
   end
 
   def test_flac_writing
     title = 'test with utf8éblèàqsf'
-    ai = AudioInfo.new(FLAC_FILE)
-    ai.title = title
-    ai.close
+    @i.title = title
+    @i.close
     ai = AudioInfo.new(FLAC_FILE)
     assert_equal title, ai.title
   end
