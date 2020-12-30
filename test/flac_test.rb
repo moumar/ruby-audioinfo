@@ -8,7 +8,7 @@ require 'tmpdir'
 
 require_relative 'test_helper'
 
-class TestAudioinfo < MiniTest::Unit::TestCase
+class FlacTest < MiniTest::Test
   FLAC_FILE = "#{Dir.tmpdir}/ruby-audioinfo-test.flac"
 
   def setup
