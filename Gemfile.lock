@@ -19,6 +19,8 @@ GEM
     cicphash (1.1.0)
     flacinfo-rb (1.0)
     minitest (5.14.2)
+    minitest-rg (5.2.0)
+      minitest (~> 5.0)
     moumar-wmainfo-rb (0.8)
     mp4info (1.7.3)
     parallel (1.20.1)
@@ -51,6 +53,7 @@ PLATFORMS
 
 DEPENDENCIES
   minitest (~> 5.0)
+  minitest-rg (~> 5.2)
   rake (~> 13.0)
   rubocop (~> 1.7.0)
   ruby-audioinfo!
