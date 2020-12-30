@@ -48,6 +48,7 @@ GEM
     wavefile (0.6.0)
 
 PLATFORMS
+  universal-java-1.8
   x86_64-darwin-20
   x86_64-linux
 
