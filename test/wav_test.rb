@@ -1,14 +1,11 @@
 # frozen_string_literal: true
 
-require_relative '../lib/audioinfo'
-require 'minitest/autorun'
-
 require 'fileutils'
 require 'tmpdir'
 
 require_relative 'test_helper'
 
-class TestWav < MiniTest::Unit::TestCase
+class TestWav < MiniTest::Test
   WAV_FILE = "#{Dir.tmpdir}/ruby-audioinfo-test.wav"
 
   def setup

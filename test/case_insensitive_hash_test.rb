@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
-require 'audioinfo'
-require 'minitest/autorun'
+require_relative 'test_helper'
 
-class TestCaseInsensitiveHash < MiniTest::Unit::TestCase
+class CaseInsensitiveHashTest < MiniTest::Test
   def test_string_access
     h = CaseInsensitiveHash.new
     h['foo'] = 'bar'
