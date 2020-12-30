@@ -10,15 +10,14 @@ class TestWav < MiniTest::Test
 
   def setup
     FileUtils.cp(File.join(SUPPORT_DIR, 'piano2.wav'), WAV_FILE)
+    @i = AudioInfo.new(WAV_FILE)
   end
 
   def test_wav_whitelist
-    i = AudioInfo.new(WAV_FILE)
-    assert_kind_of WaveFile::Info, i.info
+    assert_kind_of WaveFile::Info, @i.info
   end
 
   def test_wav_length
-    i = AudioInfo.new(WAV_FILE)
-    assert_in_delta(i.length, 6.306)
+    assert_in_delta(@i.length, 6.306)
   end
 end
