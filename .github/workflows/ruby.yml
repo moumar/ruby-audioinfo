@@ -15,7 +15,12 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        ruby: [2.5, 2.6, 2.7, 3.0, jruby, truffleruby]
+    runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
     - name: Set up Ruby
@@ -24,11 +29,25 @@ jobs:
     # uses: ruby/setup-ruby@v1
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.6
+        ruby-version: ${{ matrix.ruby }}
         bundler-cache: true
     - name: Install dependencies
       run: sudo apt install ffmpeg
     - name: Install Gems
       run: bundle install
     - name: Run tests
-      run: bundle exec rake
+      run: bundle exec rake test
+
+  rubocop:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.5
+        bundler-cache: true
+    - name: Install Gems
+      run: bundle install
+    - name: Run tests
+      run: bundle exec rubocop
