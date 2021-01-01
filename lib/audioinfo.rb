@@ -149,10 +149,12 @@ class AudioInfo
         @length = @info.SECS
         mapping = MUSICBRAINZ_FIELDS.invert
 
-        faad_info(filename).match(/^MusicBrainz (.+)$/) do
-          name, value = Regexp.last_match(1).split(/: /, 2)
+        faad_info(filename).scan(/^MusicBrainz (.+): (.+)$/) do |match|
+          name, value = match
           key = mapping[name]
-          @musicbrainz_infos[key] = value
+          next unless key
+
+          @musicbrainz_infos[key] = value.strip.gsub("\u0000", '')
         end
 
       when 'flac'
@@ -375,29 +377,21 @@ class AudioInfo
   rescue ApeTagError
   end
 
-  def faad_info(file)
-    stdout, stdout_w = IO.pipe
-    stderr, stderr_w = IO.pipe
+  def faad_info(path)
+    require 'open3'
 
-    fork do
-      stdout.close
-      stderr.close
-      $stdout.reopen(stdout_w)
-      $stderr.reopen(stderr_w)
-      exec 'faad', '-i', file
+    output = ''
+    status = nil
+
+    begin
+      Open3.popen3('faad', '-i', path) do |_stdin, _stdout, stderr, wait_thr|
+        output = stderr.read.chomp
+        status = wait_thr.value
+      end
+    rescue StandardError
     end
 
-    stdout_w.close
-    stderr_w.close
-    pid, status = Process.wait2
-
-    out = stdout.read.chomp
-    stdout.close
-    err = stderr.read.chomp
-    stderr.close
-
-    # Return the stderr because faad prints info on that fd...
-    status.exitstatus.zero? ? err : ''
+    status&.exitstatus&.zero? ? output : ''
   end
 
   def shell_escape(s)

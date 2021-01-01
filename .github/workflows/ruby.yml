@@ -32,7 +32,7 @@ jobs:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true
     - name: Install dependencies
-      run: sudo apt install ffmpeg
+      run: sudo apt install ffmpeg faad
     - name: Install Gems
       run: bundle install
     - name: Run tests
