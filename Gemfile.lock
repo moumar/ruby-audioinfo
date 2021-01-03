@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ruby-audioinfo (0.5.4)
+    ruby-audioinfo (0.5.5)
       apetag (>= 1.1.4)
       flacinfo-rb (>= 0.4)
       moumar-wmainfo-rb (>= 0.7)
