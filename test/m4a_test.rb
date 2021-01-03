@@ -15,7 +15,7 @@ class M4aTest < MiniTest::Test
 
   def test_default_fields
     assert_equal(
-      DEFAULT_INFO.slice("artist", "length", "tracknum").merge("bitrate" => 113),
+      DEFAULT_INFO.slice('artist', 'length', 'tracknum').merge('bitrate' => 113),
       @i.to_h.compact
     )
   end

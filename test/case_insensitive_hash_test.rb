@@ -4,7 +4,7 @@ require_relative 'test_helper'
 
 class CaseInsensitiveHashTest < MiniTest::Test
   def setup
-    @h = CaseInsensitiveHash.new
+    @h = AudioInfo::CaseInsensitiveHash.new
   end
 
   def test_string_access
@@ -23,7 +23,7 @@ class CaseInsensitiveHashTest < MiniTest::Test
   end
 
   def test_copy_constructor
-    h = CaseInsensitiveHash.new({ 'FOO' => 'bar' })
+    h = AudioInfo::CaseInsensitiveHash.new({ 'FOO' => 'bar' })
     assert_equal 'bar', h['foo']
   end
 end

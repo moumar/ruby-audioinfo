@@ -17,7 +17,7 @@ class FlacTest < MiniTest::Test
   end
 
   def test_default_fields
-    assert_equal(DEFAULT_INFO.merge("length" => 3.0, "bitrate" => 216.0859375), @i.to_h)
+    assert_equal(DEFAULT_INFO.merge('length' => 3.0, 'bitrate' => 216.0859375), @i.to_h)
   end
 
   def test_flac_writing

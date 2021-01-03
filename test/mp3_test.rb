@@ -8,7 +8,7 @@ require_relative 'test_helper'
 class MP3Test < MiniTest::Test
   MP3_FILE = "#{Dir.tmpdir}/ruby-audioinfo-test.mp3"
 
-  # mp3 loads both artists here while some other formats do not
+  # mp3 loads both artists while other formats do not
   ARTIST = "#{MUSICBRAINZ_INFO['artistid']}/4ebf48b9-9b17-43e2-b4aa-7f29b7e608d1"
 
   def setup
