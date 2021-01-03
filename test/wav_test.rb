@@ -9,15 +9,15 @@ class TestWav < MiniTest::Test
   WAV_FILE = "#{Dir.tmpdir}/ruby-audioinfo-test.wav"
 
   def setup
-    FileUtils.cp(File.join(SUPPORT_DIR, 'piano2.wav'), WAV_FILE)
+    FileUtils.cp(File.join(SUPPORT_DIR, 'cantina_band.wav'), WAV_FILE)
     @i = AudioInfo.new(WAV_FILE)
   end
 
-  def test_wav_whitelist
-    assert_kind_of WaveFile::Info, @i.info
+  def test_default_fields
+    assert_equal({ 'length' => 3.0, 'bitrate' => 352.8645833333333 }, @i.to_h.compact)
   end
 
-  def test_wav_length
-    assert_in_delta(@i.length, 6.306)
+  def test_musicbrainz
+    assert_equal({}, @i.musicbrainz_infos)
   end
 end
