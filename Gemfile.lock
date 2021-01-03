@@ -21,7 +21,7 @@ GEM
       simplecov (>= 0.15, < 0.22)
     docile (1.4.0)
     flacinfo-rb (1.0)
-    minitest (5.14.2)
+    minitest (5.15.0)
     minitest-rg (5.2.0)
       minitest (~> 5.0)
     moumar-wmainfo-rb (0.8)
@@ -59,6 +59,7 @@ GEM
     wavefile (0.6.0)
 
 PLATFORMS
+  ruby
   universal-java-1.8
   x86_64-darwin-20
   x86_64-linux
@@ -73,4 +74,4 @@ DEPENDENCIES
   ruby-audioinfo!
 
 BUNDLED WITH
-   2.2.32
+   2.2.33

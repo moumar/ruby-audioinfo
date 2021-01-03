@@ -43,27 +43,27 @@ Lint/UselessAssignment:
 # Offense count: 7
 # Configuration parameters: IgnoredMethods, CountRepeatedAttributes.
 Metrics/AbcSize:
-  Max: 177
+  Max: 190
 
 # Offense count: 2
 # Configuration parameters: CountComments, CountAsOne.
 Metrics/ClassLength:
-  Max: 322
+  Max: 324
 
 # Offense count: 4
 # Configuration parameters: IgnoredMethods.
 Metrics/CyclomaticComplexity:
-  Max: 29
+  Max: 36
 
 # Offense count: 8
 # Configuration parameters: CountComments, CountAsOne, ExcludedMethods, IgnoredMethods.
 Metrics/MethodLength:
-  Max: 117
+  Max: 126
 
 # Offense count: 4
 # Configuration parameters: IgnoredMethods.
 Metrics/PerceivedComplexity:
-  Max: 24
+  Max: 31
 
 # Offense count: 6
 # Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
