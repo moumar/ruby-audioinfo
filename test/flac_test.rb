@@ -12,16 +12,12 @@ class FlacTest < MiniTest::Test
   FLAC_FILE = "#{Dir.tmpdir}/ruby-audioinfo-test.flac"
 
   def setup
-    FileUtils.cp(File.join(SUPPORT_DIR, '440Hz-5sec.flac'), FLAC_FILE)
+    FileUtils.cp(File.join(SUPPORT_DIR, 'cantina_band.flac'), FLAC_FILE)
     @i = AudioInfo.new(FLAC_FILE)
   end
 
-  def test_flac_whitelist
-    assert_kind_of FlacInfo, @i.info
-  end
-
-  def test_flac_tags_wrapper
-    assert_kind_of CaseInsensitiveHash, @i.info.tags
+  def test_default_fields
+    assert_equal(DEFAULT_INFO.merge("length" => 3.0, "bitrate" => 216.0859375), @i.to_h)
   end
 
   def test_flac_writing

@@ -13,15 +13,14 @@ class M4aTest < MiniTest::Test
     @i = AudioInfo.new(M4A_FILE)
   end
 
-  def test_whitelist
-    assert_kind_of MP4Info, @i.info
-  end
-
-  def test_length
-    assert_in_delta(@i.length, 3)
+  def test_default_fields
+    assert_equal(
+      DEFAULT_INFO.slice("artist", "length", "tracknum").merge("bitrate" => 113),
+      @i.to_h.compact
+    )
   end
 
   def test_musicbrainz
-    assert_equal('57c051a1-41db-4764-bfab-ecac5cb3a144', @i.musicbrainz_infos['artistid'])
+    assert_equal(MUSICBRAINZ_INFO, @i.musicbrainz_infos)
   end
 end
