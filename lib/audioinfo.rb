@@ -97,7 +97,7 @@ class AudioInfo
         @bitrate = @info.bitrate
         i = @info.tag.tracknum
         @tracknum = (i.is_a?(Array) ? i.last : i).to_i
-        @length = @info.length.to_i
+        @length = @info.length.to_f
         @date = @info.tag['date']
         @vbr = @info.vbr
         @info.close
@@ -108,7 +108,7 @@ class AudioInfo
         default_tag_fill
         @bitrate = @info.bitrate / 1000
         @tracknum = @info.tag.tracknumber.to_i
-        @length = @info.length.to_i
+        @length = @info.length.to_f
         @date = @info.tag['date']
         @vbr = true
         @info.close
