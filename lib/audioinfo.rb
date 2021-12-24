@@ -67,7 +67,7 @@ class AudioInfo
 
     @path = filename
     ext = File.extname(@path)
-    @extension = extension || (ext && ext[1..-1].downcase)
+    @extension = extension || (ext && ext[1..].downcase)
     raise(AudioInfoError, 'cannot find extension') if @extension.empty?
 
     @musicbrainz_infos = {}
