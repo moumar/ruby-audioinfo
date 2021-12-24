@@ -8,9 +8,6 @@ end
 
 if ENV['CI']
   require 'codecov'
-  if Gem::Version.new(Codecov::VERSION) > Gem::Version.new('0.2.15')
-    raise 'A new version of Codecov has been released, does it support Ruby3?'
-  end
 
   SimpleCov.formatter = SimpleCov::Formatter::Codecov
 end
