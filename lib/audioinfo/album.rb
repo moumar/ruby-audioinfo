@@ -6,6 +6,8 @@ module AudioInfo
   class Album
     IMAGE_EXTENSIONS = %w[jpg jpeg gif png].freeze
 
+    SUPPORTED_EXTENSIONS = %w[mp3 ogg opus spx mpc wma mp4 aac m4a flac wav].freeze
+
     # a regexp to match the "multicd" suffix of a "multicd" string
     # example: "toto (disc 1)" will match ' (disc 1)'
     MULTICD_REGEXP = /\s*(\(|\[)?\s*(disc|cd):?-?\s*(\d+).*(\)|\])?\s*$/i.freeze
@@ -46,7 +48,7 @@ module AudioInfo
       @path = path
       @multicd = false
       @basename = @path
-      exts = AudioInfo::SUPPORTED_EXTENSIONS.collect do |ext|
+      exts = SUPPORTED_EXTENSIONS.collect do |ext|
         ext.gsub(/[a-z]/) { |c| "[#{c.downcase}#{c.upcase}]" }
       end.join(',')
 
