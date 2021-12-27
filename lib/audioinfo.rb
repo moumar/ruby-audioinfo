@@ -77,23 +77,24 @@ class AudioInfo
       when 'mp3'
         @info = Mp3Info.new(filename)
         default_tag_fill
-        # "TXXX"=>
-        # ["MusicBrainz TRM Id\000",
-        # "MusicBrainz Artist Id\000aba64937-3334-4c65-90a1-4e6b9d4d7ada",
-        # "MusicBrainz Album Id\000e1a223c1-cbc2-427f-a192-5d22fefd7c4c",
-        # "MusicBrainz Album Type\000album",
-        # "MusicBrainz Album Status\000official",
-        # "MusicBrainz Album Artist Id\000"]
 
+        # Mp3Info parses additional tags into TXXX
         if (arr = @info.tag2['TXXX']).is_a?(Array)
           fields = MUSICBRAINZ_FIELDS.invert
           arr.each do |val|
-            if val =~ /^MusicBrainz (.+)\000(.*)$/
-              short_name = fields[Regexp.last_match(1)]
-              @musicbrainz_infos[short_name] = Regexp.last_match(2).gsub("\xEF\xBB\xBF".force_encoding('UTF-8'), '')
-            end
+            next unless val =~ /^MusicBrainz (.+)\000(.*)$/
+
+            short_name = fields[Regexp.last_match(1)]
+            next unless short_name
+
+            @musicbrainz_infos[short_name] =
+              Regexp.last_match(2).gsub(String.new("\xEF\xBB\xBF").force_encoding('UTF-8'), '')
           end
         end
+
+        # MusicBrainz Track ID is over here:
+        @musicbrainz_infos['trackid'] = @info.tag2['UFID']&.split("\x00")&.last
+
         @bitrate = @info.bitrate
         i = @info.tag.tracknum
         @tracknum = (i.is_a?(Array) ? i.last : i).to_i
@@ -124,17 +125,27 @@ class AudioInfo
 
       when 'wma'
         @info = WmaInfo.new(filename, encoding: 'utf-8')
-        @artist = @info.tags['Author']
-        @album = @info.tags['AlbumTitle']
-        @title = @info.tags['Title']
-        @tracknum = @info.tags['TrackNumber'].to_i
-        @date = @info.tags['Year']
+        tags = @info.tags.map { |k, v| [k.strip, v.strip] }.to_h
+
+        @artist = tags['Author']
+        @album = tags['AlbumTitle']
+        @title = tags['Title']
+        @tracknum = tags['TrackNumber'].to_i
+        @date = tags['Year']
         @bitrate = @info.info['bitrate']
         @length = @info.info['playtime_seconds']
+
+        info = @info.info.map do |k, v|
+          [
+            k.respond_to?(:strip) ? k.strip : k,
+            v.respond_to?(:strip) ? v.strip : v
+          ]
+        end.to_h
+
         MUSICBRAINZ_FIELDS.each do |key, original_key|
           @musicbrainz_infos[key] =
-            @info.info["MusicBrainz/#{original_key.tr(' ', '')}"] ||
-            @info.info["MusicBrainz/#{original_key}"]
+            info["MusicBrainz/#{original_key.tr(' ', '')}"] ||
+            info["MusicBrainz/#{original_key}"]
         end
 
       when 'mp4', 'aac', 'm4a'
