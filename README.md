@@ -1,5 +1,10 @@
 # ruby-audioinfo
 
+## Status: unmaintained
+
+🚨 This project is no longer actively maintained.
+
+
 Glues together various audio ruby libraries and presents a unified API to the developer.
 Currently, supported formats are: mp3, ogg, mpc, ape, wma, flac, aac, mp4, m4a.
 
